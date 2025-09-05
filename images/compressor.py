@@ -4,7 +4,7 @@ from PIL import Image
 
 # --- 配置区 ---
 # 1. JPG 压缩质量 (1-95，数值越小体积越小，质量越差。推荐 75-85)
-JPG_QUALITY = 50
+JPG_QUALITY = 20
 
 # 2. 是否处理子文件夹
 PROCESS_SUBFOLDERS = True
