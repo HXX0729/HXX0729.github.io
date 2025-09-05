@@ -1,0 +1,34 @@
+@font-face {
+  font-family: 'Klee One';
+  /* 确保文件名和你的文件完全一致，注意 .ttf 后缀 */
+  src: url('/fonts/Klee_One/LXGWWenKai-Regular.ttf') format('truetype');
+  font-weight: 400; /* Regular */
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Klee One';
+  /* 确保文件名和你的文件完全一致，注意 .ttf 后缀 */
+  src: url('/fonts/Klee_One/LXGWWenKai-Regular.ttf') format('truetype');
+  font-weight: 600; /* SemiBold */
+  font-style: normal;
+  font-display: swap;
+}
+
+/* /*
+ * 使用 !important 来确保我们的自定义字体优先级最高，
+ * 覆盖掉主题在特定区域（如侧边栏、导航栏）设置的默认字体。
+*/
+
+/* 将 Klee One 字体强制应用到网站主要区域 */
+body, #site-name, #nav .menus a, .card-widget {
+  font-family: 'Klee One', sans-serif !important;
+}
+
+/* * 保持代码块为等宽字体，避免使用手写体，保证代码的可读性
+ * 您可以根据喜好将 'monospace' 替换成其他代码字体，如 'Fira Code'
+*/
+code, kbd, pre, samp {
+  font-family: monospace !important;
+} */
