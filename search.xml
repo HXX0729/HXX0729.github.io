@@ -10,7 +10,7 @@
 <li>defauldict(必须提供参数，作为默认值)</li>
 <li>dict.values()返回的是一个视图，必须list（）来显示转化为list</li>
 </ol>
-<h1 id="Day4-两数之和"><a href="#Day4-两数之和" class="headerlink" title="Day4 [[两数之和]]"></a>Day4 [[两数之和]]</h1><ol>
+<h1 id="Day4-两数之和"><a href="#Day4-两数之和" class="headerlink" title="Day4 [两数之和]"></a>Day4 [两数之和]</h1><ol>
 <li>这道题目要求返回的是下标，因此不能用排序+双指针</li>
 <li>一边遍历nums一遍插入哈希表(这样比起先一下子建好哈希表，可以避免重复取2次自己），以num作为key，index作为v</li>
 <li>每次遍历的时候顺便看看target - num在不在哈希表里</li>
