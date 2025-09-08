@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>template</title>
+    <url>/2025/09/05/template/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Leetcode（连载中）</title>
     <url>/2025/09/05/lc/Leetcode%EF%BC%88%E8%BF%9E%E8%BD%BD%E4%B8%AD%EF%BC%89/</url>
     <content><![CDATA[<p>&#x3D;&#x3D;哈希&#x3D;&#x3D;</p>
@@ -331,6 +339,12 @@
 <li>因为这个题的转移方程是：遍历前面所有的dp[j]，如果这个nums[i] &gt;nums[j]，说明i可以跟在j后面，因此才能继承j的dp值。</li>
 <li>由于dp[i]后面可能会小于前面，并不是对前面整体取max，所以最后return的时候要return max(dp)<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">lengthOfLIS</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line"></span><br><span class="line">        n = <span class="built_in">len</span>(nums)</span><br><span class="line"></span><br><span class="line">        dp = [<span class="number">1</span>] * (n)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n):</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(i):</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> nums[i] &gt; nums[j]:</span><br><span class="line"></span><br><span class="line">                    dp[i] = <span class="built_in">max</span>(dp[i], dp[j] + <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">max</span>(dp)</span><br></pre></td></tr></table></figure></li>
 </ol>
+<h1 id="Day31-乘积最大子数组（不熟）"><a href="#Day31-乘积最大子数组（不熟）" class="headerlink" title="Day31 乘积最大子数组（不熟）"></a>Day31 <a href="https://leetcode.cn/problems/maximum-product-subarray/">乘积最大子数组</a>（不熟）</h1><ol>
+<li>原先的想法是维护两个 dp 数组，一个正数，一个负数</li>
+<li>Gemini 提出了 O1 空间的解法：维护 max_so_far和min_so_far，意义是以上一个结尾的最大值。</li>
+<li>遍历数组，每一个 nums[i]都要决定：max_so_far和 min 是要以自己开始，还是作为乘积接在上一个子数组后面</li>
+<li>每一次遍历都要维护全局最大值 result<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line"></span><br><span class="line">	<span class="keyword">def</span> <span class="title function_">maxProduct</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">	</span><br><span class="line">	max_so_far = min_so_far = nums[<span class="number">0</span>]</span><br><span class="line">	</span><br><span class="line">	n = <span class="built_in">len</span>(nums)</span><br><span class="line">	</span><br><span class="line">	result = max_so_far</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n):</span><br><span class="line">	</span><br><span class="line">	tmp_max_so_far = <span class="built_in">max</span>(nums[i], nums[i]*max_so_far, nums[i]*min_so_far)</span><br><span class="line">	</span><br><span class="line">	min_so_far = <span class="built_in">min</span>(nums[i], nums[i]*max_so_far, nums[i]*min_so_far)</span><br><span class="line">	</span><br><span class="line">	max_so_far = tmp_max_so_far</span><br><span class="line">	</span><br><span class="line">	result = <span class="built_in">max</span>(result, max_so_far)</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> result</span><br></pre></td></tr></table></figure></li>
+</ol>
 ]]></content>
       <categories>
         <category>技术</category>
@@ -370,14 +384,6 @@
 ]]></content>
       <categories>
         <category>做饭</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>template</title>
-    <url>/2025/09/05/template/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>技术</category>
       </categories>
   </entry>
 </search>
