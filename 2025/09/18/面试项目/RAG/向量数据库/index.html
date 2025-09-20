@@ -1,0 +1,291 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>向量数据库 | 榴莲千层的小窝</title><meta name="author" content="Durian Crepe"><meta name="copyright" content="Durian Crepe"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="数据库名称 类型 核心优势 适用场景    Milvus &#x2F; Zilliz Cloud 开源 &#x2F; 云服务 功能全面强大，专为大规模设计 大规模、高并发的专业AI应用   Pinecone 云服务 简单易用，性能卓越，完全托管 快速开发，商业生产环境   Qdrant 开源 性能高，高级过滤能力强 需要复杂过滤规则的生产环境   Weaviate 开源 内置Embeddin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="向量数据库">
+<meta property="og:url" content="http://hxx0729.github.io/2025/09/18/%E9%9D%A2%E8%AF%95%E9%A1%B9%E7%9B%AE/RAG/%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/index.html">
+<meta property="og:site_name" content="榴莲千层的小窝">
+<meta property="og:description" content="数据库名称 类型 核心优势 适用场景    Milvus &#x2F; Zilliz Cloud 开源 &#x2F; 云服务 功能全面强大，专为大规模设计 大规模、高并发的专业AI应用   Pinecone 云服务 简单易用，性能卓越，完全托管 快速开发，商业生产环境   Qdrant 开源 性能高，高级过滤能力强 需要复杂过滤规则的生产环境   Weaviate 开源 内置Embeddin">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://hxx0729.github.io/img/durian-girl.jpg">
+<meta property="article:published_time" content="2025-09-18T07:30:00.000Z">
+<meta property="article:modified_time" content="2025-09-20T12:47:32.959Z">
+<meta property="article:author" content="Durian Crepe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://hxx0729.github.io/img/durian-girl.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "向量数据库",
+  "url": "http://hxx0729.github.io/2025/09/18/%E9%9D%A2%E8%AF%95%E9%A1%B9%E7%9B%AE/RAG/%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/",
+  "image": "http://hxx0729.github.io/img/durian-girl.jpg",
+  "datePublished": "2025-09-18T07:30:00.000Z",
+  "dateModified": "2025-09-20T12:47:32.959Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Durian Crepe",
+      "url": "http://HXX0729.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://hxx0729.github.io/2025/09/18/%E9%9D%A2%E8%AF%95%E9%A1%B9%E7%9B%AE/RAG/%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"No results found for: ${query}","hits_stats":"${hits} articles found"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Failed',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '向量数据库',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/my-fonts.css"><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/durian-girl.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">18</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">7</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa-solid fa-house"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa-solid fa-box-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa-solid fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa-solid fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/friends/"><i class="fa-fw fa-solid fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">榴莲千层的小窝</span></a><a class="nav-page-title" href="/"><span class="site-name">向量数据库</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  Back to Home</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa-solid fa-house"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa-solid fa-box-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa-solid fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa-solid fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/friends/"><i class="fa-fw fa-solid fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">向量数据库</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2025-09-18T07:30:00.000Z" title="Created 2025-09-18 15:30:00">2025-09-18</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2025-09-20T12:47:32.959Z" title="Updated 2025-09-20 20:47:32">2025-09-20</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF/RAG/">RAG</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="container post-content" id="article-container"><table>
+<thead>
+<tr>
+<th>数据库名称</th>
+<th>类型</th>
+<th>核心优势</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Milvus &#x2F; Zilliz Cloud</strong></td>
+<td>开源 &#x2F; 云服务</td>
+<td>功能全面强大，专为大规模设计</td>
+<td>大规模、高并发的专业AI应用</td>
+</tr>
+<tr>
+<td><strong>Pinecone</strong></td>
+<td>云服务</td>
+<td>简单易用，性能卓越，完全托管</td>
+<td>快速开发，商业生产环境</td>
+</tr>
+<tr>
+<td><strong>Qdrant</strong></td>
+<td>开源</td>
+<td>性能高，高级过滤能力强</td>
+<td>需要复杂过滤规则的生产环境</td>
+</tr>
+<tr>
+<td><strong>Weaviate</strong></td>
+<td>开源</td>
+<td>内置Embedding，图结构，上下文搜索</td>
+<td>需要端到端解决方案，数据有关联性</td>
+</tr>
+<tr>
+<td><strong>ChromaDB</strong></td>
+<td>开源</td>
+<td>轻量，专为AI应用开发流程设计</td>
+<td>本地开发，快速原型，中小型项目</td>
+</tr>
+<tr>
+<td><strong>PostgreSQL + pgvector</strong></td>
+<td>数据库扩展</td>
+<td>技术栈简单，与现有数据无缝集成</td>
+<td>已使用Postgres的中小型项目</td>
+</tr>
+<tr>
+<td><strong>Redis + RediSearch</strong></td>
+<td>数据库扩展</td>
+<td>内存级速度，实时性强</td>
+<td>对延迟要求极高的实时应用</td>
+</tr>
+<tr>
+<td><strong>Faiss</strong></td>
+<td>库</td>
+<td>算法核心，极致的定制化和性能</td>
+<td>深度集成到自定义应用中</td>
+</tr>
+</tbody></table>
+<p>当然，很高兴您对这个例子感兴趣。结合这个例子来理解“为什么需要两个数据库”以及“向量数据库的优势”，可以帮助我们更深刻地理解现代RAG架构的精妙之处。</p>
+<p>我们可以用一个非常贴切的比喻来概括：</p>
+<p><strong>把整个知识库想象成一个大型图书馆。</strong></p>
+<ul>
+<li><p><strong>关系型数据库 (PostgreSQL)</strong> 就是存放所有实体<strong>书籍的书架</strong>。每本书（Chunk原文）都有一个精确的编号（<code>chunk_id</code>），只要你知道编号，就能瞬间找到这本书。</p>
+</li>
+<li><p><strong>向量数据库 (Milvus&#x2F;Chroma)</strong> 则是图书馆的<strong>智能搜索引擎&#x2F;索引目录</strong>。它不存放书本身，而是存放了每本书核心思想的“摘要”和“概念坐标”（Vector）。</p>
+</li>
+</ul>
+<p>你不会只用其中一个，因为它们的功能完全不同但又相辅相成。</p>
+<hr>
+<h3 id="为什么要使用两个数据库：专业分工，强强联合"><a href="#为什么要使用两个数据库：专业分工，强强联合" class="headerlink" title="为什么要使用两个数据库：专业分工，强强联合"></a>为什么要使用两个数据库：专业分工，强强联合</h3><p>不将向量和原文存在一起，主要是出于<strong>性能、功能和扩展性</strong>的极致追求。这是一种典型的“专业分工”思想。</p>
+<ol>
+<li><p><strong>核心功能完全不同 (Specialized Functions):</strong></p>
+<ul>
+<li><p><strong>关系型数据库的专长：</strong></p>
+<ul>
+<li><p><strong>精确查询：</strong> 它的核心是结构化数据管理。执行 <code>SELECT content FROM chunks WHERE chunk_id = &#39;doc1-chunk-002&#39;</code> 这种基于精确键值的查询，速度快如闪电。</p>
+</li>
+<li><p><strong>事务与一致性：</strong> 保证数据的ACID特性（原子性、一致性、隔离性、持久性），对于管理知识库、用户信息等关键数据至关重要。</p>
+</li>
+<li><p><strong>存储原文最合适：</strong> 存储文本、页码、文档名这些结构化的[[元数据]]，是它的“本职工作”。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>向量数据库的专长：</strong></p>
+<ul>
+<li><strong>模糊&#x2F;语义搜索：</strong> 它的唯一使命就是在亿万级的高维向量中，进行超高速的<strong>相似度搜索</strong>。它要回答的问题不是“ID为X的内容是什么”，而是“和这个意思最像的内容是哪些”。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>性能优化方向不同 (Different Performance Optimizations):</strong></p>
+<ul>
+<li><p>关系型数据库如果要计算相似度，它需要做“暴力”的全表扫描：取出每一条记录，计算它和查询向量的余弦相似度，然后排序。当数据量变大时，这会慢到无法接受。</p>
+</li>
+<li><p>向量数据库则使用了专门的**[[近似最近邻（ANN）算法]]**（如 HNSW、IVF-PQ 等）。这些算法通过构建特殊的索引结构，可以牺牲极小的精度（比如99.9%的准确率）来换取成千上万倍的搜索速度，实现毫秒级的响应。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>扩展性与成本考量 (Scalability and Cost):</strong></p>
+<ul>
+<li><p>向量计算和存储是资源密集型的，尤其是在大规模场景下。将向量系统独立出来，意味着当搜索成为瓶颈时，你可以<strong>独立地扩展向量数据库集群</strong>，而不用动存储原文的关系型数据库。</p>
+</li>
+<li><p>反之亦然，如果只是文档数量增多，你可以只扩展关系型数据库的存储。这种**[[分离式架构]]**让系统扩展更灵活，成本也更可控。</p>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="向量数据库的核心优势"><a href="#向量数据库的核心优势" class="headerlink" title="向量数据库的核心优势"></a>向量数据库的核心优势</h3><p>现在我们来聚焦向量数据库本身，它到底“神”在哪里？</p>
+<ol>
+<li><p><strong>超越关键词匹配，实现真正的&#x3D;&#x3D;[[语义理解]]&#x3D;&#x3D;：</strong> 这是它与传统搜索引擎（如Elasticsearch的BM25算法）最根本的区别。</p>
+<ul>
+<li><p><strong>关键词搜索：</strong> 你搜“汽车”，它只会返回包含“汽车”这个词的文档。它不认识“轿车”或“automobile”。</p>
+</li>
+<li><p><strong>向量搜索：</strong> 你搜“汽车”，它的查询向量会和“轿车”、“automobile”、“车辆”等词的向量在语义空间中非常接近。因此，即使原文中没有“汽车”这个词，但只要意思相关，就能被准确地召回。</p>
+</li>
+<li><p><strong>在我们的例子中：</strong> 用户问“芯片功耗是多少”，即使原文Chunk B中没有“多少”这个词，但向量模型理解了问题的核心意图是查询“功耗”的“数值”，因此能精准匹配到包含功耗数据的表格。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>为&#x3D;&#x3D;[[非结构化数据]]而生：</strong> 文本、图片、音频、视频&#x3D;&#x3D;……这些都是非结构化数据，无法直接存入传统数据库的行列中进行有意义的查询。但通过[[Embedding]]模型，这些数据都可以被转换成向量。向量数据库使得<strong>对一切非结构化数据进行语义搜索</strong>成为了可能。</p>
+</li>
+<li><p><strong>极致的查询性能与高扩展性：</strong> 如前所述，通过专门的ANN索引算法，向量数据库可以在数十亿规模的数据集上实现毫秒级的相似度查询。并且它们通常被设计为分布式系统，可以水平扩展以应对不断增长的数据量。</p>
+</li>
+<li><p><strong>&#x3D;&#x3D;专为AI应用打造：</strong> 向量数据库是AI时代的产物，它完美承接了深度学习模型（尤其是Embedding模型）的输出。它不仅仅是一个存储系统，更是连接模型理解能力与实际应用的桥梁，是构建大模型记忆体、推荐系统、图像检索等众多AI应用的核心基础设施。</p>
+</li>
+</ol>
+<p><strong>总结一下：</strong></p>
+<p>使用两个数据库，就像我们的大脑一样。关系型数据库像是负责<strong>精确记忆</strong>的“海马体”，能准确无误地调取“昨天晚饭吃了什么”；而向量数据库则像是负责<strong>联想与归纳</strong>的“新皮层”，当你想到“假期”时，它会为你链接到“沙滩”、“旅游”、“放松”等一系列相关概念。</p>
+<p>在RAG中，正是这种<strong>精确存储</strong>与<strong>智能联想</strong>的完美结合，才让系统既能“记得准”，又能“想得到”，从而实现了高质量的知识检索与生成。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="http://HXX0729.github.io">Durian Crepe</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="http://hxx0729.github.io/2025/09/18/%E9%9D%A2%E8%AF%95%E9%A1%B9%E7%9B%AE/RAG/%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/">http://hxx0729.github.io/2025/09/18/%E9%9D%A2%E8%AF%95%E9%A1%B9%E7%9B%AE/RAG/%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated.</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/durian-girl.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2025/09/18/%E9%9D%A2%E8%AF%95%E9%A1%B9%E7%9B%AE/RAG/Embedding/" title="Embedding"><img class="cover" src="/images/tommorrow.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">Previous</div><div class="info-item-2">Embedding</div></div><div class="info-2"><div class="info-item-1"> </div></div></div></a><a class="pagination-related" href="/2025/09/05/food/%E5%81%9A%E9%A5%AD%E6%97%A5%E8%AE%B0/" title="做饭日记"><img class="cover" src="/images/asuna.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">Next</div><div class="info-item-2">做饭日记</div></div><div class="info-2"><div class="info-item-1">（图片加载较慢）香煎照烧鸡胸肉鸡胸肉加入淀粉煎制，比直接煎强。但是酱汁太淡了  番茄滑蛋牛肉老问题，番茄没有番茄味  上汤西兰花好吃的，下次多搞点咸鸭蛋黄 法式白汁大失败，葡萄酒放太多了 香菜牛肉意面牛肉汤做啥都香 牛排5.0稳定发挥，没啥说的 大杂烩饺子饺子吃不完了 鸡胸肉配金枪鱼排这个金枪鱼疑似是大豆蛋白做的 中西意面主打有啥放啥 避风塘炒蟹这个避风塘炒料太咸了。。 水波蛋半夜猪瘾犯了。空气炸锅130度13分钟，完美的流心。  Lasgna哦一西。但是里面汤汁过多。疑似意面没有控干水，以及番茄等内部蔬菜受热水蒸气被芝士阻挡无法蒸发。  牛排4.0比上次偏老。但是这次摆盘好看 牛排3.0完美的七分熟。芦笋根部偏老 奶油蘑菇汤伟大无需多言 奶汁烩红对虾我那么大一只虾做完之后就这么点？  番茄意面番茄味不够，下次改用番茄罐头 牛排2.0换铸铁锅。每面1min，外侧全熟而内侧raw。  牛排1.0全熟，极难咀嚼。每面超过3min  响油鳝丝1.0神中神，下次记得买大而粗的鳝丝，口感更佳 </div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/durian-girl.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Durian Crepe</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">18</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">7</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/HXX0729"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">欢迎来到榴莲岛！我将记录我的学习和生活。 头像是榴莲千层姬！</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E4%BD%BF%E7%94%A8%E4%B8%A4%E4%B8%AA%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%9A%E4%B8%93%E4%B8%9A%E5%88%86%E5%B7%A5%EF%BC%8C%E5%BC%BA%E5%BC%BA%E8%81%94%E5%90%88"><span class="toc-number">1.</span> <span class="toc-text">为什么要使用两个数据库：专业分工，强强联合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E6%A0%B8%E5%BF%83%E4%BC%98%E5%8A%BF"><span class="toc-number">2.</span> <span class="toc-text">向量数据库的核心优势</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Posts</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/09/20/java%E7%9F%A5%E8%AF%86/Bean/" title="Bean">Bean</a><time datetime="2025-09-20T15:32:00.000Z" title="Created 2025-09-20 23:32:00">2025-09-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/09/20/HTTP/HTTP%E5%8D%8F%E8%AE%AE%20%E5%AE%8C%E5%85%A8%20%E6%98%AF%E7%94%B1%E5%BA%94%E7%94%A8%EF%BC%88%E5%A6%82Tomcat%E6%9C%8D%E5%8A%A1%E5%99%A8%20%E5%AE%9E%E7%8E%B0%E7%9A%84%EF%BC%89/" title="HTTP协议 完全 是由应用（如Tomcat服务器 实现的）">HTTP协议 完全 是由应用（如Tomcat服务器 实现的）</a><time datetime="2025-09-20T15:21:00.000Z" title="Created 2025-09-20 23:21:00">2025-09-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/09/20/java%E7%9F%A5%E8%AF%86/Tomcat/" title="Tomcat">Tomcat</a><time datetime="2025-09-20T15:16:00.000Z" title="Created 2025-09-20 23:16:00">2025-09-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/09/20/HTTP/%E6%AF%8F%E4%B8%AAHTTP%E8%AF%B7%E6%B1%82%E6%98%AF%E7%8B%AC%E7%AB%8B%E7%9A%84(session)/" title="每个HTTP请求是独立的">每个HTTP请求是独立的</a><time datetime="2025-09-20T15:01:00.000Z" title="Created 2025-09-20 23:01:00">2025-09-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/09/20/java%E7%9F%A5%E8%AF%86/Java%E5%8D%95%E4%BE%8B%E6%98%AF%E5%A6%82%E4%BD%95%E5%AD%98%E5%82%A8%E4%B8%AD%E9%97%B4%E5%8F%98%E9%87%8F/" title="Java单例是如何存储中间变量">Java单例是如何存储中间变量</a><time datetime="2025-09-20T13:09:00.000Z" title="Created 2025-09-20 21:09:00">2025-09-20</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 By Durian Crepe</span><span class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.4.3</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Settings"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading Database</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>

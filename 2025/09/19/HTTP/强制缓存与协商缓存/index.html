@@ -1,0 +1,165 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>强制缓存与协商缓存 | 榴莲千层的小窝</title><meta name="author" content="Durian Crepe"><meta name="copyright" content="Durian Crepe"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="强制缓存 与 协商缓存 不是两种对立的技术，而是结合使用的：比如一个网站的 logo 在不同页面的 HTML 里都会出现。我在访问页面 A 时收到了 logo.pic, 那在进入页面 B 时就会使用之前缓存的logo.pic[[每传输一个资源都会发起一次HTTP请求]]， 1. 优先使用强制缓存：基于时间的信任，&#x3D;&#x3D;完全避免网络请求&#x3D;&#x3D;客户端浏览器如果发现要">
+<meta property="og:type" content="article">
+<meta property="og:title" content="强制缓存与协商缓存">
+<meta property="og:url" content="http://hxx0729.github.io/2025/09/19/HTTP/%E5%BC%BA%E5%88%B6%E7%BC%93%E5%AD%98%E4%B8%8E%E5%8D%8F%E5%95%86%E7%BC%93%E5%AD%98/index.html">
+<meta property="og:site_name" content="榴莲千层的小窝">
+<meta property="og:description" content="强制缓存 与 协商缓存 不是两种对立的技术，而是结合使用的：比如一个网站的 logo 在不同页面的 HTML 里都会出现。我在访问页面 A 时收到了 logo.pic, 那在进入页面 B 时就会使用之前缓存的logo.pic[[每传输一个资源都会发起一次HTTP请求]]， 1. 优先使用强制缓存：基于时间的信任，&#x3D;&#x3D;完全避免网络请求&#x3D;&#x3D;客户端浏览器如果发现要">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://hxx0729.github.io/img/durian-girl.jpg">
+<meta property="article:published_time" content="2025-09-19T13:09:00.000Z">
+<meta property="article:modified_time" content="2025-09-20T12:47:32.950Z">
+<meta property="article:author" content="Durian Crepe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://hxx0729.github.io/img/durian-girl.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "强制缓存与协商缓存",
+  "url": "http://hxx0729.github.io/2025/09/19/HTTP/%E5%BC%BA%E5%88%B6%E7%BC%93%E5%AD%98%E4%B8%8E%E5%8D%8F%E5%95%86%E7%BC%93%E5%AD%98/",
+  "image": "http://hxx0729.github.io/img/durian-girl.jpg",
+  "datePublished": "2025-09-19T13:09:00.000Z",
+  "dateModified": "2025-09-20T12:47:32.950Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Durian Crepe",
+      "url": "http://HXX0729.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://hxx0729.github.io/2025/09/19/HTTP/%E5%BC%BA%E5%88%B6%E7%BC%93%E5%AD%98%E4%B8%8E%E5%8D%8F%E5%95%86%E7%BC%93%E5%AD%98/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"No results found for: ${query}","hits_stats":"${hits} articles found"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Failed',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '强制缓存与协商缓存',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/my-fonts.css"><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/durian-girl.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">18</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">7</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa-solid fa-house"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa-solid fa-box-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa-solid fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa-solid fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/friends/"><i class="fa-fw fa-solid fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">榴莲千层的小窝</span></a><a class="nav-page-title" href="/"><span class="site-name">强制缓存与协商缓存</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  Back to Home</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa-solid fa-house"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa-solid fa-box-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa-solid fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa-solid fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/friends/"><i class="fa-fw fa-solid fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">强制缓存与协商缓存</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2025-09-19T13:09:00.000Z" title="Created 2025-09-19 21:09:00">2025-09-19</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2025-09-20T12:47:32.950Z" title="Updated 2025-09-20 20:47:32">2025-09-20</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF/HTTP/">HTTP</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="container post-content" id="article-container"><h3 id="强制缓存-与-协商缓存-不是两种对立的技术，而是结合使用的："><a href="#强制缓存-与-协商缓存-不是两种对立的技术，而是结合使用的：" class="headerlink" title="强制缓存 与 协商缓存 不是两种对立的技术，而是结合使用的："></a>强制缓存 与 协商缓存 不是两种对立的技术，而是结合使用的：</h3><p>比如一个网站的 logo 在不同页面的 HTML 里都会出现。我在访问页面 A 时收到了 logo.pic, 那在进入页面 B 时就会使用之前缓存的logo.pic<br>[[每传输一个资源都会发起一次HTTP请求]]，</p>
+<h3 id="1-优先使用强制缓存："><a href="#1-优先使用强制缓存：" class="headerlink" title="1. 优先使用强制缓存："></a>1. 优先使用强制缓存：</h3><p><strong>基于时间的信任，&#x3D;&#x3D;完全避免网络请求&#x3D;&#x3D;</strong><br>客户端浏览器如果发现要请求的资源在 disk 已经有了，则不会向服务端请求<br>1.1 如何表征一个资源：使用 URL（文件名）<br>    <strong>不一致问题</strong>：如果服务端的文件发生了修改，但是名字没改，这样客户端就不知道这个 URL 的数据发生了变动，导致文件内容与服务端不一致。<br>    <strong>解决方案</strong>：现代的 Webpeck 工具会自动更新 HTML 里面的 URL，加入文件的Hash<br>1.2 如何协议：在 HTTP 头部设置过期时间 和 是否开启强制缓存 的 flag<br>1.3 过期时间：会设置 expire time，如果没到这个时间，浏览器就会默认读取 disk 缓存</p>
+<h3 id="2-（强制缓存过期后）使用协商缓存："><a href="#2-（强制缓存过期后）使用协商缓存：" class="headerlink" title="2. （强制缓存过期后）使用协商缓存："></a>2. （强制缓存过期后）使用协商缓存：</h3><p>此时本地缓存已经过期，但不一定代表他不能用了。他可能仍然是最新的，因此客户端需要向服务端发送请求询问这个资源是否仍然 remain latest 。<br><strong>如何询问</strong>：2 个字段：<br>    2.1 if-modified-since：客户端上次受到这个资源的时间<br>    2.2 ETag:文件的哈希，客户端会带上上次服务端发来的 etag，服务端会用此来比对当前文件是否 remains latest<br><strong>服务端返回</strong>：<br>    如果是最新的，就返回 304<br>    如果需要更新，就返回更新的资源，并且 200OK
+    </p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="http://HXX0729.github.io">Durian Crepe</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="http://hxx0729.github.io/2025/09/19/HTTP/%E5%BC%BA%E5%88%B6%E7%BC%93%E5%AD%98%E4%B8%8E%E5%8D%8F%E5%95%86%E7%BC%93%E5%AD%98/">http://hxx0729.github.io/2025/09/19/HTTP/%E5%BC%BA%E5%88%B6%E7%BC%93%E5%AD%98%E4%B8%8E%E5%8D%8F%E5%95%86%E7%BC%93%E5%AD%98/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated.</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/durian-girl.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2025/09/20/java%E7%9F%A5%E8%AF%86/%E5%8D%95%E4%BE%8B%E5%A6%82%E4%BD%95%E8%A2%AB%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%89%A7%E8%A1%8C/" title="单例如何被多线程执行"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">Previous</div><div class="info-item-2">单例如何被多线程执行</div></div><div class="info-2"><div class="info-item-1">[[JVM内存]]中，类的方法被存放在 方法区， 实例化后的实例 被存放在 堆区。 [[Tomcat]]服务器会负责创建线程，并给每一个http请求分配一个线程，这个线程通过调用controller实例.方法() 去调用这个单例的方法。http请求的context会被交给这个线程的栈区，然后根据实例去找 方法区的 方法，去执行。方法就是程序代码，每个线程的栈数据 配合 这个程序代码 就可以顺利执行了。不需要考虑数据覆盖，因为我们并没有使用这个实例的成员变量（存放在堆区），而是在方法内部（该方法的栈内存里 存放了临时数据，因此不存在共享问题） &#x3D;&#x3D;好的，没有问题。我们用一个非常具体、符合Spring Boot开发实践的例子，来完整地走一遍从HTTP请求到达Tomcat，到您的Controller方法被执行的全流程。 场景设定 HTTP请求：一个客户端（比如浏览器）向您的应用发送了一个请求，想要获取ID为123的用户信息。  请求方法：GET  请求URL：http://localhost:8080/users/123    您的Controller代码：您在项目...</div></div></div></a><a class="pagination-related  no-desc" href="/2025/09/19/%E9%9D%A2%E8%AF%95%E9%A1%B9%E7%9B%AE/RAG/Redis/%E6%9C%AA%E5%91%BD%E5%90%8D/" title=""><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">Next</div><div class="info-item-2"></div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/durian-girl.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Durian Crepe</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">18</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">7</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/HXX0729"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">欢迎来到榴莲岛！我将记录我的学习和生活。 头像是榴莲千层姬！</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%BA%E5%88%B6%E7%BC%93%E5%AD%98-%E4%B8%8E-%E5%8D%8F%E5%95%86%E7%BC%93%E5%AD%98-%E4%B8%8D%E6%98%AF%E4%B8%A4%E7%A7%8D%E5%AF%B9%E7%AB%8B%E7%9A%84%E6%8A%80%E6%9C%AF%EF%BC%8C%E8%80%8C%E6%98%AF%E7%BB%93%E5%90%88%E4%BD%BF%E7%94%A8%E7%9A%84%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">强制缓存 与 协商缓存 不是两种对立的技术，而是结合使用的：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%BC%98%E5%85%88%E4%BD%BF%E7%94%A8%E5%BC%BA%E5%88%B6%E7%BC%93%E5%AD%98%EF%BC%9A"><span class="toc-number">2.</span> <span class="toc-text">1. 优先使用强制缓存：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%EF%BC%88%E5%BC%BA%E5%88%B6%E7%BC%93%E5%AD%98%E8%BF%87%E6%9C%9F%E5%90%8E%EF%BC%89%E4%BD%BF%E7%94%A8%E5%8D%8F%E5%95%86%E7%BC%93%E5%AD%98%EF%BC%9A"><span class="toc-number">3.</span> <span class="toc-text">2. （强制缓存过期后）使用协商缓存：</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Posts</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/09/20/java%E7%9F%A5%E8%AF%86/Bean/" title="Bean">Bean</a><time datetime="2025-09-20T15:32:00.000Z" title="Created 2025-09-20 23:32:00">2025-09-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/09/20/HTTP/HTTP%E5%8D%8F%E8%AE%AE%20%E5%AE%8C%E5%85%A8%20%E6%98%AF%E7%94%B1%E5%BA%94%E7%94%A8%EF%BC%88%E5%A6%82Tomcat%E6%9C%8D%E5%8A%A1%E5%99%A8%20%E5%AE%9E%E7%8E%B0%E7%9A%84%EF%BC%89/" title="HTTP协议 完全 是由应用（如Tomcat服务器 实现的）">HTTP协议 完全 是由应用（如Tomcat服务器 实现的）</a><time datetime="2025-09-20T15:21:00.000Z" title="Created 2025-09-20 23:21:00">2025-09-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/09/20/java%E7%9F%A5%E8%AF%86/Tomcat/" title="Tomcat">Tomcat</a><time datetime="2025-09-20T15:16:00.000Z" title="Created 2025-09-20 23:16:00">2025-09-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/09/20/HTTP/%E6%AF%8F%E4%B8%AAHTTP%E8%AF%B7%E6%B1%82%E6%98%AF%E7%8B%AC%E7%AB%8B%E7%9A%84(session)/" title="每个HTTP请求是独立的">每个HTTP请求是独立的</a><time datetime="2025-09-20T15:01:00.000Z" title="Created 2025-09-20 23:01:00">2025-09-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/09/20/java%E7%9F%A5%E8%AF%86/Java%E5%8D%95%E4%BE%8B%E6%98%AF%E5%A6%82%E4%BD%95%E5%AD%98%E5%82%A8%E4%B8%AD%E9%97%B4%E5%8F%98%E9%87%8F/" title="Java单例是如何存储中间变量">Java单例是如何存储中间变量</a><time datetime="2025-09-20T13:09:00.000Z" title="Created 2025-09-20 21:09:00">2025-09-20</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 By Durian Crepe</span><span class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.4.3</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Settings"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading Database</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>

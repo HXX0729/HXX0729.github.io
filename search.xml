@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>template</title>
+    <url>/2025/09/05/template/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Leetcode（连载中）</title>
     <url>/2025/09/05/lc/Leetcode%EF%BC%88%E8%BF%9E%E8%BD%BD%E4%B8%AD%EF%BC%89/</url>
     <content><![CDATA[<p>&#x3D;&#x3D;哈希&#x3D;&#x3D;</p>
@@ -331,6 +339,18 @@
 <li>因为这个题的转移方程是：遍历前面所有的dp[j]，如果这个nums[i] &gt;nums[j]，说明i可以跟在j后面，因此才能继承j的dp值。</li>
 <li>由于dp[i]后面可能会小于前面，并不是对前面整体取max，所以最后return的时候要return max(dp)<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">lengthOfLIS</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line"></span><br><span class="line">        n = <span class="built_in">len</span>(nums)</span><br><span class="line"></span><br><span class="line">        dp = [<span class="number">1</span>] * (n)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n):</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(i):</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> nums[i] &gt; nums[j]:</span><br><span class="line"></span><br><span class="line">                    dp[i] = <span class="built_in">max</span>(dp[i], dp[j] + <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">max</span>(dp)</span><br></pre></td></tr></table></figure></li>
 </ol>
+<h1 id="Day31-乘积最大子数组（不熟）"><a href="#Day31-乘积最大子数组（不熟）" class="headerlink" title="Day31 乘积最大子数组（不熟）"></a>Day31 <a href="https://leetcode.cn/problems/maximum-product-subarray/">乘积最大子数组</a>（不熟）</h1><ol>
+<li>原先的想法是维护两个 dp 数组，一个正数，一个负数</li>
+<li>Gemini 提出了 O1 空间的解法：维护 max_so_far和min_so_far，意义是以上一个结尾的最大值。</li>
+<li>遍历数组，每一个 nums[i]都要决定：max_so_far和 min 是要以自己开始，还是作为乘积接在上一个子数组后面</li>
+<li>每一次遍历都要维护全局最大值 result<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line"></span><br><span class="line">	<span class="keyword">def</span> <span class="title function_">maxProduct</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">	</span><br><span class="line">	max_so_far = min_so_far = nums[<span class="number">0</span>]</span><br><span class="line">	</span><br><span class="line">	n = <span class="built_in">len</span>(nums)</span><br><span class="line">	</span><br><span class="line">	result = max_so_far</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n):</span><br><span class="line">	</span><br><span class="line">	tmp_max_so_far = <span class="built_in">max</span>(nums[i], nums[i]*max_so_far, nums[i]*min_so_far)</span><br><span class="line">	</span><br><span class="line">	min_so_far = <span class="built_in">min</span>(nums[i], nums[i]*max_so_far, nums[i]*min_so_far)</span><br><span class="line">	</span><br><span class="line">	max_so_far = tmp_max_so_far</span><br><span class="line">	</span><br><span class="line">	result = <span class="built_in">max</span>(result, max_so_far)</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> result</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h1 id="Day-32-分割等和子集（不熟）"><a href="#Day-32-分割等和子集（不熟）" class="headerlink" title="Day 32 分割等和子集（不熟）"></a>Day 32 <a href="https://leetcode.cn/problems/partition-equal-subset-sum/">分割等和子集</a>（不熟）</h1><ol>
+<li>01 背包问题，weight 和 value 都是 数字的值</li>
+<li>dp[i][j]的意义是，已经放到第 i 的数字的前提下，其总和不能超过 j的最大值</li>
+<li>最后判断 dp[n][target]的最大值是否 &#x3D;&#x3D; target，因为这个最大值最大就是塞满整个背包</li>
+<li>一个数组里面找到一个子集的和等于另一个，等价于找到一个子集的和是整个数组的一半<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">canPartition</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">bool</span>:</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">sum</span>(nums) % <span class="number">2</span> != <span class="number">0</span>:</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">	</span><br><span class="line">	  </span><br><span class="line">	</span><br><span class="line">	target = <span class="built_in">sum</span>(nums) // <span class="number">2</span></span><br><span class="line">	</span><br><span class="line">	n = <span class="built_in">len</span>(nums)</span><br><span class="line">	</span><br><span class="line">	dp = [[<span class="number">0</span>] * (target + <span class="number">1</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(n + <span class="number">1</span>)]</span><br><span class="line">	</span><br><span class="line">	  </span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,target + <span class="number">1</span>):</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">if</span> j &lt; nums[i - <span class="number">1</span>]:</span><br><span class="line">	</span><br><span class="line">	dp[i][j] = dp[i - <span class="number">1</span>][j]</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">	</span><br><span class="line">	  </span><br><span class="line">	</span><br><span class="line">	dp[i][j] = <span class="built_in">max</span>(nums[i - <span class="number">1</span>] + dp[i - <span class="number">1</span>][j - nums[i - <span class="number">1</span>]], dp[i - <span class="number">1</span>][j])</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> dp[n][target] == target</span><br></pre></td></tr></table></figure></li>
+</ol>
 ]]></content>
       <categories>
         <category>技术</category>
@@ -373,9 +393,592 @@
       </categories>
   </entry>
   <entry>
-    <title>template</title>
-    <url>/2025/09/05/template/</url>
+    <title>Ragflow 智能切片</title>
+    <url>/2025/09/18/%E9%9D%A2%E8%AF%95%E9%A1%B9%E7%9B%AE/RAG/Ragflow%20%E6%99%BA%E8%83%BD%E5%88%87%E7%89%87/</url>
+    <content><![CDATA[<ol>
+<li>传统切片：按照页数或者字数粗暴的切，比如 200 字一个 chunk<br> 缺点：切片时可能没有考虑到语义信息，导致一个语义块被拆成两部分，那有的关键信息可能就无法被 RAG 召回</li>
+<li>智能切片：<ol>
+<li>先对文档进行 cv，转化成 md 的形式</li>
+<li>切分成自然语义块：根据 换行符，句号先分成一个个 chunk 。如果这个 chunk 的 token 比较少，再尝试和后面一个 chunk 合并，直到 token 数接近设置的阈值</li>
+<li>如果遇到超大语义块：使用次级分隔符，比如：，；进行切割<ol>
+<li>&#x3D;&#x3D;亮点 &#x3D;&#x3D;：overlap 重叠机制：前后 2 个 chunk 会有一定重合，防止关键上下文丢失</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Embedding</title>
+    <url>/2025/09/18/%E9%9D%A2%E8%AF%95%E9%A1%B9%E7%9B%AE/RAG/Embedding/</url>
+    <content><![CDATA[<p><img src="/../../../images/Page1%203%201.jpg"><img src="/../../../images/Page2%203%201.jpg"></p>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>RAG</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>向量数据库</title>
+    <url>/2025/09/18/%E9%9D%A2%E8%AF%95%E9%A1%B9%E7%9B%AE/RAG/%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/</url>
+    <content><![CDATA[<table>
+<thead>
+<tr>
+<th>数据库名称</th>
+<th>类型</th>
+<th>核心优势</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Milvus &#x2F; Zilliz Cloud</strong></td>
+<td>开源 &#x2F; 云服务</td>
+<td>功能全面强大，专为大规模设计</td>
+<td>大规模、高并发的专业AI应用</td>
+</tr>
+<tr>
+<td><strong>Pinecone</strong></td>
+<td>云服务</td>
+<td>简单易用，性能卓越，完全托管</td>
+<td>快速开发，商业生产环境</td>
+</tr>
+<tr>
+<td><strong>Qdrant</strong></td>
+<td>开源</td>
+<td>性能高，高级过滤能力强</td>
+<td>需要复杂过滤规则的生产环境</td>
+</tr>
+<tr>
+<td><strong>Weaviate</strong></td>
+<td>开源</td>
+<td>内置Embedding，图结构，上下文搜索</td>
+<td>需要端到端解决方案，数据有关联性</td>
+</tr>
+<tr>
+<td><strong>ChromaDB</strong></td>
+<td>开源</td>
+<td>轻量，专为AI应用开发流程设计</td>
+<td>本地开发，快速原型，中小型项目</td>
+</tr>
+<tr>
+<td><strong>PostgreSQL + pgvector</strong></td>
+<td>数据库扩展</td>
+<td>技术栈简单，与现有数据无缝集成</td>
+<td>已使用Postgres的中小型项目</td>
+</tr>
+<tr>
+<td><strong>Redis + RediSearch</strong></td>
+<td>数据库扩展</td>
+<td>内存级速度，实时性强</td>
+<td>对延迟要求极高的实时应用</td>
+</tr>
+<tr>
+<td><strong>Faiss</strong></td>
+<td>库</td>
+<td>算法核心，极致的定制化和性能</td>
+<td>深度集成到自定义应用中</td>
+</tr>
+</tbody></table>
+<p>当然，很高兴您对这个例子感兴趣。结合这个例子来理解“为什么需要两个数据库”以及“向量数据库的优势”，可以帮助我们更深刻地理解现代RAG架构的精妙之处。</p>
+<p>我们可以用一个非常贴切的比喻来概括：</p>
+<p><strong>把整个知识库想象成一个大型图书馆。</strong></p>
+<ul>
+<li><p><strong>关系型数据库 (PostgreSQL)</strong> 就是存放所有实体<strong>书籍的书架</strong>。每本书（Chunk原文）都有一个精确的编号（<code>chunk_id</code>），只要你知道编号，就能瞬间找到这本书。</p>
+</li>
+<li><p><strong>向量数据库 (Milvus&#x2F;Chroma)</strong> 则是图书馆的<strong>智能搜索引擎&#x2F;索引目录</strong>。它不存放书本身，而是存放了每本书核心思想的“摘要”和“概念坐标”（Vector）。</p>
+</li>
+</ul>
+<p>你不会只用其中一个，因为它们的功能完全不同但又相辅相成。</p>
+<hr>
+<h3 id="为什么要使用两个数据库：专业分工，强强联合"><a href="#为什么要使用两个数据库：专业分工，强强联合" class="headerlink" title="为什么要使用两个数据库：专业分工，强强联合"></a>为什么要使用两个数据库：专业分工，强强联合</h3><p>不将向量和原文存在一起，主要是出于<strong>性能、功能和扩展性</strong>的极致追求。这是一种典型的“专业分工”思想。</p>
+<ol>
+<li><p><strong>核心功能完全不同 (Specialized Functions):</strong></p>
+<ul>
+<li><p><strong>关系型数据库的专长：</strong></p>
+<ul>
+<li><p><strong>精确查询：</strong> 它的核心是结构化数据管理。执行 <code>SELECT content FROM chunks WHERE chunk_id = &#39;doc1-chunk-002&#39;</code> 这种基于精确键值的查询，速度快如闪电。</p>
+</li>
+<li><p><strong>事务与一致性：</strong> 保证数据的ACID特性（原子性、一致性、隔离性、持久性），对于管理知识库、用户信息等关键数据至关重要。</p>
+</li>
+<li><p><strong>存储原文最合适：</strong> 存储文本、页码、文档名这些结构化的[[元数据]]，是它的“本职工作”。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>向量数据库的专长：</strong></p>
+<ul>
+<li><strong>模糊&#x2F;语义搜索：</strong> 它的唯一使命就是在亿万级的高维向量中，进行超高速的<strong>相似度搜索</strong>。它要回答的问题不是“ID为X的内容是什么”，而是“和这个意思最像的内容是哪些”。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>性能优化方向不同 (Different Performance Optimizations):</strong></p>
+<ul>
+<li><p>关系型数据库如果要计算相似度，它需要做“暴力”的全表扫描：取出每一条记录，计算它和查询向量的余弦相似度，然后排序。当数据量变大时，这会慢到无法接受。</p>
+</li>
+<li><p>向量数据库则使用了专门的**[[近似最近邻（ANN）算法]]**（如 HNSW、IVF-PQ 等）。这些算法通过构建特殊的索引结构，可以牺牲极小的精度（比如99.9%的准确率）来换取成千上万倍的搜索速度，实现毫秒级的响应。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>扩展性与成本考量 (Scalability and Cost):</strong></p>
+<ul>
+<li><p>向量计算和存储是资源密集型的，尤其是在大规模场景下。将向量系统独立出来，意味着当搜索成为瓶颈时，你可以<strong>独立地扩展向量数据库集群</strong>，而不用动存储原文的关系型数据库。</p>
+</li>
+<li><p>反之亦然，如果只是文档数量增多，你可以只扩展关系型数据库的存储。这种**[[分离式架构]]**让系统扩展更灵活，成本也更可控。</p>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="向量数据库的核心优势"><a href="#向量数据库的核心优势" class="headerlink" title="向量数据库的核心优势"></a>向量数据库的核心优势</h3><p>现在我们来聚焦向量数据库本身，它到底“神”在哪里？</p>
+<ol>
+<li><p><strong>超越关键词匹配，实现真正的&#x3D;&#x3D;[[语义理解]]&#x3D;&#x3D;：</strong> 这是它与传统搜索引擎（如Elasticsearch的BM25算法）最根本的区别。</p>
+<ul>
+<li><p><strong>关键词搜索：</strong> 你搜“汽车”，它只会返回包含“汽车”这个词的文档。它不认识“轿车”或“automobile”。</p>
+</li>
+<li><p><strong>向量搜索：</strong> 你搜“汽车”，它的查询向量会和“轿车”、“automobile”、“车辆”等词的向量在语义空间中非常接近。因此，即使原文中没有“汽车”这个词，但只要意思相关，就能被准确地召回。</p>
+</li>
+<li><p><strong>在我们的例子中：</strong> 用户问“芯片功耗是多少”，即使原文Chunk B中没有“多少”这个词，但向量模型理解了问题的核心意图是查询“功耗”的“数值”，因此能精准匹配到包含功耗数据的表格。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>为&#x3D;&#x3D;[[非结构化数据]]而生：</strong> 文本、图片、音频、视频&#x3D;&#x3D;……这些都是非结构化数据，无法直接存入传统数据库的行列中进行有意义的查询。但通过[[Embedding]]模型，这些数据都可以被转换成向量。向量数据库使得<strong>对一切非结构化数据进行语义搜索</strong>成为了可能。</p>
+</li>
+<li><p><strong>极致的查询性能与高扩展性：</strong> 如前所述，通过专门的ANN索引算法，向量数据库可以在数十亿规模的数据集上实现毫秒级的相似度查询。并且它们通常被设计为分布式系统，可以水平扩展以应对不断增长的数据量。</p>
+</li>
+<li><p><strong>&#x3D;&#x3D;专为AI应用打造：</strong> 向量数据库是AI时代的产物，它完美承接了深度学习模型（尤其是Embedding模型）的输出。它不仅仅是一个存储系统，更是连接模型理解能力与实际应用的桥梁，是构建大模型记忆体、推荐系统、图像检索等众多AI应用的核心基础设施。</p>
+</li>
+</ol>
+<p><strong>总结一下：</strong></p>
+<p>使用两个数据库，就像我们的大脑一样。关系型数据库像是负责<strong>精确记忆</strong>的“海马体”，能准确无误地调取“昨天晚饭吃了什么”；而向量数据库则像是负责<strong>联想与归纳</strong>的“新皮层”，当你想到“假期”时，它会为你链接到“沙滩”、“旅游”、“放松”等一系列相关概念。</p>
+<p>在RAG中，正是这种<strong>精确存储</strong>与<strong>智能联想</strong>的完美结合，才让系统既能“记得准”，又能“想得到”，从而实现了高质量的知识检索与生成。</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>RAG</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>RAG流程</title>
+    <url>/2025/09/18/%E9%9D%A2%E8%AF%95%E9%A1%B9%E7%9B%AE/RAG/RAG%E6%B5%81%E7%A8%8B/</url>
+    <content><![CDATA[<p>假设我们上传一份关于某AI芯片的技术白皮书 **<code>QuantumLeap_AI_Chip.pdf</code>**。</p>
+<hr>
+<h3 id="阶段一：数据入库-Ingestion"><a href="#阶段一：数据入库-Ingestion" class="headerlink" title="阶段一：数据入库 (Ingestion)"></a>阶段一：数据入库 (Ingestion)</h3><h4 id="步骤1：原始文档内容-第5页"><a href="#步骤1：原始文档内容-第5页" class="headerlink" title="步骤1：原始文档内容 (第5页)"></a><strong>步骤1：原始文档内容 (第5页)</strong></h4><p>文档第5页有以下内容：</p>
+<blockquote>
+<p><strong>3.1 功耗表现</strong> QuantumLeap AI芯片采用了先进的7nm EUV工艺，通过动态电压频率调整技术（DVFS）实现了卓越的能效比。</p>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>功耗 (瓦)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>空闲模式</td>
+<td>0.5W</td>
+</tr>
+<tr>
+<td>活跃模式</td>
+<td>5W</td>
+</tr>
+<tr>
+<td>峰值模式</td>
+<td>15W</td>
+</tr>
+</tbody></table>
+<p>Export to Sheets</p>
+</blockquote>
+<h4 id="步骤2：-Ragflow-智能切片"><a href="#步骤2：-Ragflow-智能切片" class="headerlink" title="步骤2：[[Ragflow 智能切片]]"></a><strong>步骤2：[[Ragflow 智能切片]]</strong></h4><p>RAGFlow 不会粗暴地从中间切开。它会识别出这里的结构：一个标题、一个段落和一个表格。</p>
+<ul>
+<li><p>它可能会将标题和紧随其后的段落<strong>合并</strong>，因为它们语义紧密且内容不长。这形成了 <strong>Chunk A</strong>。</p>
+</li>
+<li><p>它会将整个表格识别为一个独立的、完整的单元。这形成了 <strong>Chunk B</strong>。</p>
+</li>
+</ul>
+<p>我们得到两个切片：</p>
+<ul>
+<li><p><strong>Chunk A (ID: <code>doc1-chunk-001</code>)</strong>:</p>
+<blockquote>
+<p><strong>文本内容</strong>: “3.1 功耗表现\nQuantumLeap AI芯片采用了先进的7nm EUV工艺，通过动态电压频率调整技术（DVFS）实现了卓越的能效比。”
+  </p>
+</blockquote>
+</li>
+<li><p><strong>Chunk B (ID: <code>doc1-chunk-002</code>)</strong>:</p>
+<blockquote>
+<p><strong>文本内容 (可能被转换为Markdown)</strong>: “| 模式 | 功耗 (瓦) | \n| :— | :— | \n| 空闲模式 | 0.5W | \n| 活跃模式 | 5W | \n| 峰值模式 | 15W |”</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="步骤3：嵌入-Embedding"><a href="#步骤3：嵌入-Embedding" class="headerlink" title="步骤3：嵌入 (Embedding)"></a><strong>步骤3：嵌入 (Embedding)</strong></h4><p>系统使用 Embedding 模型，将这两个切片的文本内容分别转换成向量：</p>
+<ul>
+<li><p><code>Chunk A 的文本</code> -&gt; <code>模型</code> -&gt; <code>Vector_A</code> (一个数字数组，如 <code>[0.15, -0.78, 0.33, ...]</code>)</p>
+</li>
+<li><p><code>Chunk B 的文本</code> -&gt; <code>模型</code> -&gt; <code>Vector_B</code> (另一个数字数组，如 <code>[0.67, 0.21, -0.54, ...]</code>)</p>
+</li>
+</ul>
+<h4 id="步骤4：分别存储"><a href="#步骤4：分别存储" class="headerlink" title="步骤4：分别存储"></a><strong>步骤4：分别存储</strong></h4><p>现在，数据被存入两个数据库：</p>
+<ol>
+<li><p><strong>[[向量数据库]] (以 Milvus 为例)</strong> 这里只关心向量和它的ID，用于快速比较。 | ID | Vector | | :— | :— | | <code>doc1-chunk-001</code> | <code>[0.15, -0.78, 0.33, ...]</code> | | <code>doc1-chunk-002</code> | <code>[0.67, 0.21, -0.54, ...]</code> |</p>
+</li>
+<li><p><strong>关系型数据库 (以 PostgreSQL 为例)</strong> 这里存储所有可读的详细信息。 | chunk_id | content | metadata | | :— | :— | :— | | <code>doc1-chunk-001</code> | “3.1 功耗表现\nQuantumLeap AI芯片…” | <code>&#123; &quot;doc_name&quot;: &quot;QL_AI_Chip.pdf&quot;, &quot;page&quot;: 5, &quot;type&quot;: &quot;text&quot; &#125;</code> | | <code>doc1-chunk-002</code> | “| 模式 | 功耗 (瓦) | \n| :— |…” | <code>&#123; &quot;doc_name&quot;: &quot;QL_AI_Chip.pdf&quot;, &quot;page&quot;: 5, &quot;type&quot;: &quot;table&quot; &#125;</code> |</p>
+</li>
+</ol>
+<hr>
+<h3 id="阶段二：用户查询与召回-Retrieval-余弦相似度计算"><a href="#阶段二：用户查询与召回-Retrieval-余弦相似度计算" class="headerlink" title="阶段二：用户查询与召回 (Retrieval)([[余弦相似度计算]])"></a>阶段二：用户查询与召回 (Retrieval)([[余弦相似度计算]])</h3><h4 id="步骤5：用户提问"><a href="#步骤5：用户提问" class="headerlink" title="步骤5：用户提问"></a><strong>步骤5：用户提问</strong></h4><p>一个用户向系统提问：“<strong>QuantumLeap 芯片在不同模式下的功耗是多少？</strong>”</p>
+<h4 id="步骤6：问题嵌入"><a href="#步骤6：问题嵌入" class="headerlink" title="步骤6：问题嵌入"></a><strong>步骤6：问题嵌入</strong></h4><p>系统使用<strong>完全相同</strong>的 Embedding 模型，将用户的问题也转换成一个向量：</p>
+<ul>
+<li><code>&quot;QuantumLeap 芯片在不同模式下的功耗是多少？&quot;</code> -&gt; <code>模型</code> -&gt; <code>Query_Vector</code> (例如 <code>[0.65, 0.19, -0.51, ...]</code>)</li>
+</ul>
+<h2 id="阶段三：-rerank"><a href="#阶段三：-rerank" class="headerlink" title="阶段三： [[rerank]]"></a>阶段三： [[rerank]]</h2><h4 id="步骤7：向量搜索"><a href="#步骤7：向量搜索" class="headerlink" title="步骤7：向量搜索"></a><strong>步骤7：向量搜索</strong></h4><p>系统拿着 <code>Query_Vector</code> 去<strong>向量数据库</strong>中进行搜索。数据库计算 <code>Query_Vector</code> 与所有已存储向量的“语义相似度”。</p>
+<ul>
+<li><p><code>Query_Vector</code> (<code>[0.65, ...]</code>) 与 <code>Vector_A</code> (<code>[0.15, ...]</code>) 的相似度较低。</p>
+</li>
+<li><p><code>Query_Vector</code> (<code>[0.65, ...]</code>) 与 <code>Vector_B</code> (<code>[0.67, ...]</code>) 的相似度<strong>非常高</strong>，因为它们都包含“模式”和“功耗”的核心语义。</p>
+</li>
+</ul>
+<p>向量数据库返回最匹配的ID列表，排在第一位的是：<code>[&quot;doc1-chunk-002&quot;]</code>。</p>
+<h4 id="步骤8：获取原文"><a href="#步骤8：获取原文" class="headerlink" title="步骤8：获取原文"></a><strong>步骤8：获取原文</strong></h4><p>系统拿到这个胜出的ID <code>doc1-chunk-002</code>，去<strong>关系型数据库</strong>中查找。</p>
+<ul>
+<li>它找到了对应的那一行，取出了 <code>content</code> 字段（也就是那个Markdown格式的表格）和 <code>metadata</code> 字段。</li>
+</ul>
+<h4 id="步骤9：生成答案"><a href="#步骤9：生成答案" class="headerlink" title="步骤9：生成答案"></a><strong>步骤9：生成答案</strong></h4><p>最后，系统将检索到的内容（表格）和用户的原始问题整合在一起，形成一个提示（Prompt），发送给大语言模型（LLM）。</p>
+<ul>
+<li><p><strong>发送给LLM的内容类似：</strong></p>
+<blockquote>
+<p><strong>[背景知识]:</strong> 以下是从文档《QL_AI_Chip.pdf》第5页找到的关于功耗的表格： | 模式 | 功耗 (瓦) | | :— | :— | | 空闲模式 | 0.5W | | 活跃模式 | 5W | | 峰值模式 | 15W |</p>
+<p><strong>[用户问题]:</strong> QuantumLeap 芯片在不同模式下的功耗是多少？</p>
+<p><strong>[指令]:</strong> 请根据以上背景知识回答用户问题。
+  </p>
+</blockquote>
+</li>
+<li><p><strong>LLM输出的最终答案：</strong></p>
+<blockquote>
+<p>QuantumLeap AI芯片在不同模式下的功耗分别为：空闲模式是0.5W，活跃模式是5W，峰值模式是15W。</p>
+</blockquote>
+</li>
+</ul>
+<p>这个例子清晰地展示了两个数据库如何协同工作，通过“向量比对”定位信息，再通过“ID查询”获取原文，最终为用户生成精准的答案。</p>
+<h1 id="为什么使用-2-种数据库？"><a href="#为什么使用-2-种数据库？" class="headerlink" title="为什么使用 2 种数据库？"></a>为什么使用 2 种数据库？</h1><ol>
+<li>[[向量数据库]]对于向量相似度计算有优化，ANN 算法可以在 99.99%的准确率下，实现比关系型数据库 id 查找快 1w 倍</li>
+<li>灵活拓展：采用[[分离式架构]]如果向量相似度计算瓶颈，就只用横向增加向量数据库的集群</li>
+</ol>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>RAG</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>rerank</title>
+    <url>/2025/09/18/%E9%9D%A2%E8%AF%95%E9%A1%B9%E7%9B%AE/RAG/rerank/</url>
+    <content><![CDATA[<p><img src="/../../../images/Page3%203.jpg"></p>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>RAG</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>强制缓存与协商缓存</title>
+    <url>/2025/09/19/HTTP/%E5%BC%BA%E5%88%B6%E7%BC%93%E5%AD%98%E4%B8%8E%E5%8D%8F%E5%95%86%E7%BC%93%E5%AD%98/</url>
+    <content><![CDATA[<h3 id="强制缓存-与-协商缓存-不是两种对立的技术，而是结合使用的："><a href="#强制缓存-与-协商缓存-不是两种对立的技术，而是结合使用的：" class="headerlink" title="强制缓存 与 协商缓存 不是两种对立的技术，而是结合使用的："></a>强制缓存 与 协商缓存 不是两种对立的技术，而是结合使用的：</h3><p>比如一个网站的 logo 在不同页面的 HTML 里都会出现。我在访问页面 A 时收到了 logo.pic, 那在进入页面 B 时就会使用之前缓存的logo.pic<br>[[每传输一个资源都会发起一次HTTP请求]]，</p>
+<h3 id="1-优先使用强制缓存："><a href="#1-优先使用强制缓存：" class="headerlink" title="1. 优先使用强制缓存："></a>1. 优先使用强制缓存：</h3><p><strong>基于时间的信任，&#x3D;&#x3D;完全避免网络请求&#x3D;&#x3D;</strong><br>客户端浏览器如果发现要请求的资源在 disk 已经有了，则不会向服务端请求<br>1.1 如何表征一个资源：使用 URL（文件名）<br>    <strong>不一致问题</strong>：如果服务端的文件发生了修改，但是名字没改，这样客户端就不知道这个 URL 的数据发生了变动，导致文件内容与服务端不一致。<br>    <strong>解决方案</strong>：现代的 Webpeck 工具会自动更新 HTML 里面的 URL，加入文件的Hash<br>1.2 如何协议：在 HTTP 头部设置过期时间 和 是否开启强制缓存 的 flag<br>1.3 过期时间：会设置 expire time，如果没到这个时间，浏览器就会默认读取 disk 缓存</p>
+<h3 id="2-（强制缓存过期后）使用协商缓存："><a href="#2-（强制缓存过期后）使用协商缓存：" class="headerlink" title="2. （强制缓存过期后）使用协商缓存："></a>2. （强制缓存过期后）使用协商缓存：</h3><p>此时本地缓存已经过期，但不一定代表他不能用了。他可能仍然是最新的，因此客户端需要向服务端发送请求询问这个资源是否仍然 remain latest 。<br><strong>如何询问</strong>：2 个字段：<br>    2.1 if-modified-since：客户端上次受到这个资源的时间<br>    2.2 ETag:文件的哈希，客户端会带上上次服务端发来的 etag，服务端会用此来比对当前文件是否 remains latest<br><strong>服务端返回</strong>：<br>    如果是最新的，就返回 304<br>    如果需要更新，就返回更新的资源，并且 200OK
+    </p>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>HTTP</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>为什么不用Java Map本地缓存</title>
+    <url>/2025/09/19/%E9%9D%A2%E8%AF%95%E9%A1%B9%E7%9B%AE/RAG/Redis/%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E7%94%A8Java%20Map%E6%9C%AC%E5%9C%B0%E7%BC%93%E5%AD%98/</url>
+    <content><![CDATA[<p>因为我们的后端服务是<strong>分布式、多实例部署</strong>的。如果使用本地缓存，用户的第一次请求可能由服务器A处理，第二次请求被负载均衡到了服务器B，服务器B的本地缓存里没有这个用户的对话历史，就会导致记忆丢失。所以，我们需要一个所有后端实例都能访问的<strong>分布式共享缓存</strong>，Redis是这个场景下的业界标准。</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>Redis</category>
+      </categories>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/2025/09/19/%E9%9D%A2%E8%AF%95%E9%A1%B9%E7%9B%AE/RAG/Redis/%E6%9C%AA%E5%91%BD%E5%90%8D/</url>
     <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>HTTP协议 完全 是由应用（如Tomcat服务器 实现的）</title>
+    <url>/2025/09/20/HTTP/HTTP%E5%8D%8F%E8%AE%AE%20%E5%AE%8C%E5%85%A8%20%E6%98%AF%E7%94%B1%E5%BA%94%E7%94%A8%EF%BC%88%E5%A6%82Tomcat%E6%9C%8D%E5%8A%A1%E5%99%A8%20%E5%AE%9E%E7%8E%B0%E7%9A%84%EF%BC%89/</url>
+    <content><![CDATA[<p>user：<br>所以http协议本身就是靠[[Tomcat]]这种web server实现的，os里不会有http协议栈，只会直接给Tomcat交付tcp包的payload</p>
+<p>所以HTTP协议想要升级，需要Tomcat这边和浏览器那边的厂家各自修改自己产品的代码</p>
+<p>bot：</p>
+<h3 id="详细流程解读"><a href="#详细流程解读" class="headerlink" title="详细流程解读"></a>详细流程解读</h3><p>现在，我们来看一个HTTP请求在这个流水线上的旅程：</p>
+<ol>
+<li><p><strong>Tomcat (应用层) 的工作</strong>：</p>
+<ul>
+<li><p>当一个请求到来时，Tomcat做的第一件事，是向操作系统申请一个<strong>Socket（套接字）</strong>，这是一个用于网络通信的“插口”。</p>
+</li>
+<li><p>操作系统会为Tomcat准备好这个“插口”，并处理好所有TCP和IP层面的复杂工作。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>OS (传输层&#x2F;网络层) 的工作</strong>：</p>
+<ul>
+<li><p>操作系统内核中的<strong>TCP&#x2F;IP协议栈</strong>，是这个过程的主力。</p>
+</li>
+<li><p>它会处理所有TCP包的接收、排序、确认（ACK）、重传等工作。它把所有收到的、可能乱序的TCP包，重新组装成一个<strong>有序的、完整的数据流</strong>。</p>
+</li>
+<li><p>这个完整的数据流，就是HTTP请求的原始文本（<code>GET /users/123 HTTP/1.1\r\nHost: ...</code>）。这个数据流就是<strong>TCP包的有效载荷（Payload）</strong>。</p>
+</li>
+<li><p>操作系统<strong>完全不关心</strong>这个Payload里写的是什么。它不认识<code>GET</code>，也不认识<code>Host</code>，对它来说，这只是一串二进制数据。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>交付给Tomcat</strong>：</p>
+<ul>
+<li>操作系统将这个组装好的、完整的数据流，通过之前申请的Socket“插口”，<strong>交付给正在等待的Tomcat应用程序</strong>。</li>
+</ul>
+</li>
+<li><p><strong>Tomcat (应用层) 的再次工作</strong>：</p>
+<ul>
+<li><p>Tomcat接收到这串完整的二进制数据流（TCP Payload）后，<strong>它自己的代码</strong>才开始工作。</p>
+</li>
+<li><p>Tomcat内部有专门的HTTP协议解析器，它会去<strong>解读</strong>这串数据流，识别出这是一次GET请求、请求的路径是<code>/users/123</code>、协议版本是HTTP&#x2F;1.1等等。</p>
+</li>
+<li><p>解析完成后，Tomcat才会把它封装成我们之前讨论的<code>HttpServletRequest</code>对象，交给您的Spring Boot应用去处理。</p>
+</li>
+</ul>
+</li>
+</ol>
+<p><strong>总结：</strong> 您的理解是100%正确的。</p>
+<ul>
+<li><p><strong>HTTP协议栈存在于Tomcat这样的Web Server中，而不是操作系统内核里。</strong></p>
+</li>
+<li><p><strong>操作系统只负责到TCP&#x2F;IP层</strong>，它的最终交付产物就是一个可靠的、有序的数据流，也就是TCP包的Payload。</p>
+</li>
+<li><p><strong>如何解读这个Payload，是应用层（Tomcat）的职责。</strong></p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>HTTP</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Bean</title>
+    <url>/2025/09/20/java%E7%9F%A5%E8%AF%86/Bean/</url>
+    <content><![CDATA[<p>bean就是带getter 和setter的 类 &#x2F; 对象</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>java</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>每个HTTP请求是独立的</title>
+    <url>/2025/09/20/HTTP/%E6%AF%8F%E4%B8%AAHTTP%E8%AF%B7%E6%B1%82%E6%98%AF%E7%8B%AC%E7%AB%8B%E7%9A%84(session)/</url>
+    <content><![CDATA[<p>user：<br>所有http请求都是独立的，无状态的吗。即使同一对客户端和服务端，客户端发来多个请求，都可能是不同线程处理吗，那这个客户端的一些数据不就不共享 了吗</p>
+<p>bot：<br>您提出的这三个问题层层递进，非常精准地触及了Web应用工作的核心原理。您的理解和推断<strong>完全正确</strong>，我们来把这其中的“为什么”和“如何解决”彻底讲清楚。</p>
+<h3 id="1-所有HTTP请求都是独立的，无状态的吗？"><a href="#1-所有HTTP请求都是独立的，无状态的吗？" class="headerlink" title="1. 所有HTTP请求都是独立的，无状态的吗？"></a>1. 所有HTTP请求都是独立的，无状态的吗？</h3><p>是的，您的第一个理解是完全正确的。从<strong>协议层面</strong>讲，HTTP本身就是被设计成<strong>无状态（Stateless）</strong>的。</p>
+<p>这意味着，服务器在处理一个HTTP请求时，<strong>不会保留任何关于上一次请求的记忆</strong>。每一个请求，对于服务器来说，都是一个全新的、独立的事件。服务器不会自动知道<code>请求B</code>和<code>请求A</code>是来自同一个用户。</p>
+<h3 id="2-即使是同一个客户端，多个请求也可能由不同线程处理吗？"><a href="#2-即使是同一个客户端，多个请求也可能由不同线程处理吗？" class="headerlink" title="2. 即使是同一个客户端，多个请求也可能由不同线程处理吗？"></a>2. 即使是同一个客户端，多个请求也可能由不同线程处理吗？</h3><p>是的，您的第二个推断也完全正确。在一个使用了线程池的服务器（如Tomcat）上，来自同一个客户端的连续两次请求，<strong>极有可能由两个完全不同的线程来处理</strong>。</p>
+<ul>
+<li><p>第一次请求（比如登录）可能由<strong>线程A</strong>处理。</p>
+</li>
+<li><p>第二次请求（比如获取用户信息）可能由<strong>线程B</strong>处理。</p>
+</li>
+<li><p>第三次请求（比如加入购物车）可能由<strong>线程C</strong>处理。</p>
+</li>
+</ul>
+<h3 id="3-那这个客户端的一些数据不就不共享了吗？"><a href="#3-那这个客户端的一些数据不就不共享了吗？" class="headerlink" title="3. 那这个客户端的一些数据不就不共享了吗？"></a>3. 那这个客户端的一些数据不就不共享了吗？</h3><p>基于以上两点，您得出了一个非常敏锐的结论：“<strong>那这个客户端的一些数据不就不共享了吗</strong>”。<strong>完全正确！</strong></p>
+<p>如果没有额外的机制，数据确实就丢失了。线程A处理登录成功后，这个“已登录”的状态只存在于线程A本次方法调用的内存中，请求一结束，线程A被回收，这个状态就消失了。当线程B来处理下一个请求时，它完全不知道这个用户已经登录了。</p>
+<hr>
+<h3 id="解决方案：会话管理-Session-Management"><a href="#解决方案：会话管理-Session-Management" class="headerlink" title="解决方案：会话管理 (Session Management)"></a>解决方案：会话管理 (Session Management)</h3><p>为了解决这个“无状态”协议和“有状态”业务需求（比如记住登录状态、购物车内容）之间的矛盾，Web开发中引入了一个至关重要的机制——<strong>会话管理（Session Management）</strong>。</p>
+<p>我们可以把它想象成去超市的<strong>“储物柜”</strong>：</p>
+<ol>
+<li><p><strong>第一次交互（创建会话）</strong></p>
+<ul>
+<li><p>您（客户端）第一次来到超市（服务器）。</p>
+</li>
+<li><p>超市前台（服务器程序）为您分配了一个<strong>专属的储物柜</strong>，并给了您一把<strong>独一无二的钥匙</strong>。</p>
+</li>
+<li><p>在技术上：服务器会创建一个<strong>Session对象</strong>来存储您的专属数据（比如登录信息），并生成一个<strong>Session ID</strong>作为这个对象的唯一标识。这把“钥匙”（Session ID）通常会通过<strong>HTTP Cookie</strong>发送给您的浏览器。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>后续交互（维持会话）</strong></p>
+<ul>
+<li><p>您在超市里逛，每次需要存取东西时，都得出示您的<strong>钥匙（Cookie）</strong>。</p>
+</li>
+<li><p>在技术上：您的浏览器在后续向该服务器发送<strong>所有请求</strong>时，都会自动附带上这个包含<strong>Session ID</strong>的Cookie。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>不同线程处理（共享数据）</strong></p>
+<ul>
+<li><p>这次您找到了一个不同的工作人员（<strong>线程B</strong>）。</p>
+</li>
+<li><p>这个工作人员（线程B）不认识您，但他认识您出示的<strong>钥匙（Session ID）</strong>。</p>
+</li>
+<li><p>他会根据这把钥匙，去储物柜区域（<strong>一个所有线程都能访问的共享存储区，比如Redis或服务器内存</strong>），找到专属于您的那个储物柜（Session对象），然后就可以操作里面的东西了（读取您的登录状态、修改您的购物车）。</p>
+</li>
+</ul>
+</li>
+</ol>
+<p><strong>总结：</strong> 所以，虽然HTTP协议是无状态的，处理请求的线程也是随机的，但我们通过<strong>Cookie</strong>这个小小的“信物”，在客户端和服务器之间建立了一个<strong>逻辑上</strong>的持续连接（会话）。</p>
+<p>服务器端的<strong>任何一个线程</strong>，只要拿到了请求中带来的**[[Session ID]]<strong>，就可以去一个</strong>集中的、共享的地方**（比如Redis）找到这个客户端的专属数据，从而实现了跨请求、跨线程的数据共享。</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>HTTP</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>JavaBean的编译时安全(Mapper和Bean对比）</title>
+    <url>/2025/09/18/java%E7%9F%A5%E8%AF%86/JavaBean%E7%9A%84%E7%BC%96%E8%AF%91%E6%97%B6%E5%AE%89%E5%85%A8(Mapper%E5%92%8CBean%E5%AF%B9%E6%AF%94%EF%BC%89/</url>
+    <content><![CDATA[<p>JavaBean的编译时安全，本质上源于Java的<strong>静态类型检查</strong>机制。</p>
+<p>[[Bean]]通过预定义的私有字段和公有的getter&#x2F;setter方法，与编译器之间建立了一种 <em>“强制契约”</em>。相比于<code>Map&lt;String, Object&gt;</code>这类只有在运行时才能发现问题的弱类型容器，任何对Bean的非法操作，例如：</p>
+<ol>
+<li><p><strong>方法名拼写错误</strong>（如将<code>setName</code>错写为<code>setNamme</code>）。</p>
+</li>
+<li><p><strong>传入参数类型不匹配</strong>（如为<code>int</code>类型的字段传入<code>String</code>）。</p>
+</li>
+</ol>
+<p>这些违反“契约”的行为，都会在<strong>编译阶段</strong>被编译器立即识别并报错，导致编译失败。</p>
+<p>这种将错误检查从不可控的“运行时”提前到可控的“编译时”的机制，能从源头上杜绝大量因低级错误引发的<code>NullPointerException</code>和<code>ClassCastException</code>等运行时异常，从而显著提升代码的<strong>健壮性</strong>、<strong>稳定性和可维护性</strong>。</p>
+<h1 id="对比Map："><a href="#对比Map：" class="headerlink" title="对比Map："></a>对比Map：</h1><h3 id="1-不安全的-Map-示例"><a href="#1-不安全的-Map-示例" class="headerlink" title="1. 不安全的 Map 示例"></a>1. 不安全的 <code>Map</code> 示例</h3><p>使用<code>Map</code>时，编译器无法检查Key的拼写或Value的类型，所有错误都只能在程序运行起来后才会暴露。</p>
+<p>Java</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UnsafeMapExample</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;--- 使用Map ---&quot;</span>);</span><br><span class="line">        Map&lt;String, Object&gt; personMap = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 错误1：Key拼写错误 (&quot;name&quot; -&gt; &quot;namme&quot;)</span></span><br><span class="line">        <span class="comment">// 编译器无法发现这个错误，因为Map的Key是字符串，其内容不受编译检查。</span></span><br><span class="line">        personMap.put(<span class="string">&quot;namme&quot;</span>, <span class="string">&quot;张三&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 错误2：Value类型错误 (应为Integer，却存入了String)</span></span><br><span class="line">        <span class="comment">// 编译器也无法发现这个错误，因为Map的值被声明为Object，可以接受任何类型。</span></span><br><span class="line">        personMap.put(<span class="string">&quot;age&quot;</span>, <span class="string">&quot;三十&quot;</span>);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;代码编译成功，程序开始运行...&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;--------------------&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 尝试使用数据，此时错误才会暴露</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 尝试获取name，但因为key拼写错误，得到的是null</span></span><br><span class="line">            <span class="type">String</span> <span class="variable">name</span> <span class="operator">=</span> (String) personMap.get(<span class="string">&quot;name&quot;</span>);</span><br><span class="line">            System.out.println(name.toUpperCase()); <span class="comment">// 程序在这里会因NullPointerException而崩溃</span></span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;错误暴露点1：尝试使用name时，程序因 &quot;</span> + e.getClass().getSimpleName() + <span class="string">&quot; 而崩溃！&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 尝试获取age，虽然key正确，但类型错误，转换时会失败</span></span><br><span class="line">            <span class="type">int</span> <span class="variable">age</span> <span class="operator">=</span> (<span class="type">int</span>) personMap.get(<span class="string">&quot;age&quot;</span>); <span class="comment">// 程序在这里会因ClassCastException而崩溃</span></span><br><span class="line">            System.out.println(<span class="string">&quot;年龄: &quot;</span> + age);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;错误暴露点2：尝试使用age时，程序因 &quot;</span> + e.getClass().getSimpleName() + <span class="string">&quot; 而崩溃！&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="2-安全的-Bean-示例"><a href="#2-安全的-Bean-示例" class="headerlink" title="2. 安全的 Bean 示例"></a>2. 安全的 <code>Bean</code> 示例</h3><p>使用<code>Bean</code>时，编译器会根据类的定义（“契约”）来严格检查方法名和参数类型，任何不匹配都会直接导致编译失败。</p>
+<p>Java</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 先定义一个“契约”：PersonBean类</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">PersonBean</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> age;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setName</span><span class="params">(String name)</span> &#123; <span class="built_in">this</span>.name = name; &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">getAge</span><span class="params">()</span> &#123; <span class="keyword">return</span> age; &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setAge</span><span class="params">(<span class="type">int</span> age)</span> &#123; <span class="built_in">this</span>.age = age; &#125;</span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getName</span><span class="params">()</span> &#123; <span class="keyword">return</span> name; &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SafeBeanExample</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;--- 使用Bean ---&quot;</span>);</span><br><span class="line">        <span class="type">PersonBean</span> <span class="variable">person</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">PersonBean</span>();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 错误1：方法名拼写错误</span></span><br><span class="line">        <span class="comment">// 下面这行代码会导致编译失败！编译器会立即报错：“找不到setNamme方法”。</span></span><br><span class="line">        <span class="comment">// person.setNamme(&quot;张三&quot;);</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 错误2：参数类型不匹配</span></span><br><span class="line">        <span class="comment">// 下面这行代码同样会导致编译失败！编译器会报错：“setAge方法需要int类型参数，而不是String”。</span></span><br><span class="line">        <span class="comment">// person.setAge(&quot;三十&quot;);</span></span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;上面的错误代码必须被注释掉，程序才能通过编译。&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;--------------------&quot;</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 只有完全正确的代码才能成功编译和运行</span></span><br><span class="line">        person.setName(<span class="string">&quot;张三&quot;</span>);</span><br><span class="line">        person.setAge(<span class="number">30</span>);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;姓名: &quot;</span> + person.getName());</span><br><span class="line">        System.out.println(<span class="string">&quot;年龄: &quot;</span> + person.getAge());</span><br><span class="line">        System.out.println(<span class="string">&quot;程序健壮地运行成功！&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>技术</category>
+        <category>java</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Tomcat</title>
+    <url>/2025/09/20/java%E7%9F%A5%E8%AF%86/Tomcat/</url>
+    <content><![CDATA[<p>Spring框架在建立好单例池之后，Tomcat服务器就可以开始工作了。就和之前Python socket那个实验一样。Tomcat服务器主要负责监听请求，并选择空闲线程，把这个请求（根据主线程当前主力的http connection上下文 去构建 task）交给他处理。然后这个线程会去执行1个task（就是一个lambda函数定义的借口），{线程一旦创建，这个task就被复制到他的线程私有栈里了，就包括http上下文。task其中包括了要先解析HTTP请求（一个HTTPrequest对象），根据里面的URL和GET&#x2F;POST等方法，找到对应是哪个controller的哪个方法（事先已注册），然后这个线程会走到这个方法里面，这个方法可能又会调研别的方法，就这样在线程A的栈内存上不断压栈。最后controller返回了，再打包成一个http请求}</p>
+<p>&#x3D;&#x3D;Tomcat伪代码</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// =================================================================</span></span><br><span class="line"><span class="comment">// 场景：Spring Boot应用启动时</span></span><br><span class="line"><span class="comment">// =================================================================</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 1. Spring容器初始化，并创建好所有单例Bean</span></span><br><span class="line"><span class="comment">// 这个controller对象在内存中有且仅有一个</span></span><br><span class="line"><span class="keyword">final</span> <span class="type">Controller</span> <span class="variable">controller</span> <span class="operator">=</span> springContext.getBean(Controller.class);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. Tomcat服务器启动，并创建自己的核心组件</span></span><br><span class="line"><span class="comment">// 创建一个固定大小的“工人”线程池，所有线程都处于待命状态</span></span><br><span class="line"><span class="keyword">final</span> <span class="type">ExecutorService</span> <span class="variable">threadPool</span> <span class="operator">=</span> Executors.newFixedThreadPool(<span class="number">200</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建一个服务器Socket，在8080端口上监听连接</span></span><br><span class="line"><span class="keyword">final</span> <span class="type">ServerSocket</span> <span class="variable">serverSocket</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ServerSocket</span>(<span class="number">8080</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// =================================================================</span></span><br><span class="line"><span class="comment">// 场景：Tomcat开始接收请求（这是一个无限循环）</span></span><br><span class="line"><span class="comment">// =================================================================</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">// 3. 监听并接收一个客户端连接 (此步骤会阻塞，直到有新请求进来)</span></span><br><span class="line">        <span class="type">Socket</span> <span class="variable">clientConnection</span> <span class="operator">=</span> serverSocket.accept();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 4. 为这个连接创建一个“任务”</span></span><br><span class="line">        <span class="comment">// 这个任务包含了处理该请求需要做的所有事情</span></span><br><span class="line">        <span class="type">Runnable</span> <span class="variable">requestHandlingTask</span> <span class="operator">=</span> () -&gt; &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="comment">// a. 解析原始的网络连接数据，构建成HttpRequest对象</span></span><br><span class="line">                <span class="type">HttpRequest</span> <span class="variable">httpRequest</span> <span class="operator">=</span> parseHttpRequest(clientConnection);</span><br><span class="line"></span><br><span class="line">                <span class="comment">// b. Spring的DispatcherServlet进行路径匹配，找到对应的Controller方法</span></span><br><span class="line">                <span class="comment">//    (这是一个非常复杂的内部过程，此处简化)</span></span><br><span class="line">                <span class="type">Method</span> <span class="variable">targetMethod</span> <span class="operator">=</span> findHandlerMethodFor(httpRequest); </span><br><span class="line"></span><br><span class="line">                <span class="comment">// c. 解析请求参数，准备将要传入Controller方法的实参</span></span><br><span class="line">                Object[] methodArgs = resolveMethodArguments(httpRequest, targetMethod);</span><br><span class="line"></span><br><span class="line">                <span class="comment">// d. 【核心步骤】调用Controller方法</span></span><br><span class="line">                <span class="comment">//    注意：执行这行代码的，正是从线程池中取出的那个工人线程</span></span><br><span class="line">                <span class="type">Object</span> <span class="variable">result</span> <span class="operator">=</span> targetMethod.invoke(controller, methodArgs);</span><br><span class="line"></span><br><span class="line">                <span class="comment">// e. 将Controller方法的返回值（比如一个User对象）打包成HTTP响应</span></span><br><span class="line">                <span class="type">HttpResponse</span> <span class="variable">httpResponse</span> <span class="operator">=</span> buildHttpResponse(result);</span><br><span class="line"></span><br><span class="line">                <span class="comment">// f. 将HTTP响应通过网络连接发送回客户端</span></span><br><span class="line">                sendHttpResponse(clientConnection, httpResponse);</span><br><span class="line"></span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                <span class="comment">// 处理请求过程中发生的任何错误</span></span><br><span class="line">                handleError(clientConnection, e);</span><br><span class="line">            &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                <span class="comment">// 确保网络连接被关闭</span></span><br><span class="line">                closeConnection(clientConnection);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 5. 将这个“任务”提交给线程池去执行</span></span><br><span class="line">        <span class="comment">// 线程池会自动选择一个空闲的工人线程，来运行上面定义的task</span></span><br><span class="line">        threadPool.submit(requestHandlingTask);</span><br><span class="line"></span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">        <span class="comment">// 处理服务器接收连接时发生的错误</span></span><br><span class="line">        logServerError(e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>技术</category>
+        <category>java</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>单例如何被多线程执行</title>
+    <url>/2025/09/20/java%E7%9F%A5%E8%AF%86/%E5%8D%95%E4%BE%8B%E5%A6%82%E4%BD%95%E8%A2%AB%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%89%A7%E8%A1%8C/</url>
+    <content><![CDATA[<p>[[JVM内存]]中，类的方法被存放在 方法区， 实例化后的实例 被存放在 堆区。</p>
+<p>[[Tomcat]]服务器会负责创建线程，并给每一个http请求分配一个线程，这个线程通过调用controller实例.方法() 去调用这个单例的方法。http请求的context会被交给这个线程的栈区，然后根据实例去找 方法区的 方法，去执行。<br>方法就是程序代码，每个线程的栈数据 配合 这个程序代码 就可以顺利执行了。不需要考虑数据覆盖，因为我们并没有使用这个实例的成员变量（存放在堆区），而是在方法内部（该方法的栈内存里 存放了临时数据，因此不存在共享问题）</p>
+<p>&#x3D;&#x3D;好的，没有问题。我们用一个非常具体、符合Spring Boot开发实践的例子，来完整地走一遍从HTTP请求到达Tomcat，到您的Controller方法被执行的全流程。</p>
+<h3 id="场景设定"><a href="#场景设定" class="headerlink" title="场景设定"></a>场景设定</h3><ul>
+<li><p><strong>HTTP请求</strong>：一个客户端（比如浏览器）向您的应用发送了一个请求，想要获取ID为<code>123</code>的用户信息。</p>
+<ul>
+<li><p>请求方法：<code>GET</code></p>
+</li>
+<li><p>请求URL：<code>http://localhost:8080/users/123</code></p>
+</li>
+</ul>
+</li>
+<li><p><strong>您的Controller代码</strong>：您在项目中编写了一个<code>UserController</code>。</p>
+  <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserController</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> UserService userService;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 这个方法是我们的目标入口点</span></span><br><span class="line">    <span class="meta">@GetMapping(&quot;/users/&#123;id&#125;&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> User <span class="title function_">getUserById</span><span class="params">(<span class="meta">@PathVariable</span> Long id)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;当前执行线程: &quot;</span> + Thread.currentThread().getName());</span><br><span class="line">        <span class="comment">// 调用Service层的方法</span></span><br><span class="line">        <span class="keyword">return</span> userService.findUser(id);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h3 id="详细流程分解"><a href="#详细流程分解" class="headerlink" title="详细流程分解"></a>详细流程分解</h3><h4 id="第1步：Tomcat-接收网络连接"><a href="#第1步：Tomcat-接收网络连接" class="headerlink" title="第1步：Tomcat 接收网络连接"></a>第1步：Tomcat 接收网络连接</h4><ol>
+<li><p><strong>监听端口</strong>：您的Spring Boot应用启动后，内嵌的Tomcat服务器就已经开始在<code>8080</code>端口上监听网络连接。</p>
+</li>
+<li><p><strong>解析请求</strong>：当<code>GET /users/123</code>的HTTP请求到达服务器时，Tomcat接收到这个网络数据包。它会按照HTTP协议的规范，将这些原始的文本数据，解析成一个Java世界里能理解的对象——<code>HttpServletRequest</code>。这个对象里包含了请求的所有信息（GET方法、<code>/users/123</code>路径、请求头等）。</p>
+</li>
+</ol>
+<h4 id="第2步：Tomcat-分配线程"><a href="#第2步：Tomcat-分配线程" class="headerlink" title="第2步：Tomcat 分配线程"></a>第2步：Tomcat 分配线程</h4><ol>
+<li><p><strong>从线程池取线程</strong>：Tomcat从它内部维护的<strong>线程池</strong>中，取出一个空闲的<strong>“工人线程”</strong>（我们假设它的名字是<code>http-nio-8080-exec-1</code>）。</p>
+</li>
+<li><p><strong>分配任务</strong>：Tomcat将上一步解析好的<code>HttpServletRequest</code>对象，交给了这个工人线程，让它全权负责处理这次请求的后续所有流程。</p>
+</li>
+</ol>
+<h4 id="第3步：Spring-Boot-的入口-DispatcherServlet"><a href="#第3步：Spring-Boot-的入口-DispatcherServlet" class="headerlink" title="第3步：Spring Boot 的入口 - DispatcherServlet"></a>第3步：Spring Boot 的入口 - <code>DispatcherServlet</code></h4><p>工人线程<code>http-nio-8080-exec-1</code>拿到了请求，它首先会把请求交给Spring框架的总入口——**<code>DispatcherServlet</code>**。<code>DispatcherServlet</code>是Spring MVC的核心，负责所有请求的统一分发。</p>
+<h4 id="第4th步：HandlerMapping-寻找处理方法"><a href="#第4th步：HandlerMapping-寻找处理方法" class="headerlink" title="第4th步：HandlerMapping 寻找处理方法"></a>第4th步：<code>HandlerMapping</code> 寻找处理方法</h4><p><code>DispatcherServlet</code>并不知道这个<code>GET /users/123</code>请求具体应该由哪个代码来处理。于是它会去问一个叫做**<code>HandlerMapping</code>**的组件。</p>
+<ul>
+<li><p><code>HandlerMapping</code>在应用启动时，就已经扫描了所有被<code>@Controller</code>或<code>@RestController</code>注解的类，并记录下了所有方法的URL映射规则。</p>
+</li>
+<li><p>它看到请求是<code>GET /users/123</code>，经过匹配，发现这完全符合<code>UserController</code>类中，被<code>@GetMapping(&quot;/users/&#123;id&#125;&quot;)</code>注解的<code>getUserById</code>方法的规则。</p>
+</li>
+<li><p>现在，<code>HandlerMapping</code>就告诉<code>DispatcherServlet</code>：“处理这个请求的，是<code>UserController</code>那个单例对象的<code>getUserById</code>方法”。</p>
+</li>
+</ul>
+<h4 id="第5步：HandlerAdapter-执行方法调用"><a href="#第5步：HandlerAdapter-执行方法调用" class="headerlink" title="第5步：HandlerAdapter 执行方法调用"></a>第5步：<code>HandlerAdapter</code> 执行方法调用</h4><p><code>DispatcherServlet</code>知道了具体目标后，会使用一个**<code>HandlerAdapter</code>**组件来执行这次方法调用。</p>
+<ul>
+<li><p><strong>参数解析</strong>：<code>HandlerAdapter</code>会分析<code>getUserById</code>方法的签名<code>(@PathVariable Long id)</code>。它看到<code>@PathVariable</code>注解，就知道需要从URL路径<code>/users/123</code>中，把<code>123</code>这部分提取出来，转换成<code>Long</code>类型的数字。</p>
+</li>
+<li><p><strong>方法调用</strong>：准备好参数后，工人线程<code>http-nio-8080-exec-1</code><strong>正式执行了方法调用</strong>：</p>
+  <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 底层发生的调用，由线程 http-nio-8080-exec-1 执行</span></span><br><span class="line">userController.getUserById(<span class="number">123L</span>); </span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="第6步：线程在您的代码中执行"><a href="#第6步：线程在您的代码中执行" class="headerlink" title="第6步：线程在您的代码中执行"></a>第6步：线程在您的代码中执行</h4><p>至此，<strong>线程A（<code>http-nio-8080-exec-1</code>）</strong>的执行权，正式进入了您编写的<code>UserController</code>的<code>getUserById</code>方法内部。</p>
+<ul>
+<li><p><strong>压入栈帧</strong>：一个<code>getUserById(123L)</code>的栈帧被压入了<strong>线程A的私有栈</strong>。</p>
+</li>
+<li><p><strong>打印线程名</strong>：代码执行<code>System.out.println(...)</code>，您会在控制台看到输出<code>当前执行线程: http-nio-8080-exec-1</code>。</p>
+</li>
+<li><p><strong>调用Service</strong>：当线程A执行到<code>userService.findUser(id)</code>时，它会<strong>暂停</strong>在这一行，然后<strong>进入</strong><code>UserService</code>的<code>findUser</code>方法内部继续执行。<strong>执行者依然是线程A</strong>，并且一个新的<code>findUser(123L)</code>的栈帧会被压在<code>getUserById</code>栈帧的上方。</p>
+</li>
+<li><p><strong>逐层返回</strong>：<code>findUser</code>方法从数据库拿到数据，返回一个<code>User</code>对象。<code>findUser</code>栈帧弹出，执行权回到<code>getUserById</code>。<code>getUserById</code>再将这个<code>User</code>对象向上返回。</p>
+</li>
+</ul>
+<h4 id="第7步：响应与线程回收"><a href="#第7步：响应与线程回收" class="headerlink" title="第7步：响应与线程回收"></a>第7步：响应与线程回收</h4><ol>
+<li><p><strong>JSON序列化</strong>：<code>DispatcherServlet</code>拿到Controller返回的<code>User</code>对象。因为是<code>@RestController</code>，Spring会通过一个叫做<code>HttpMessageConverter</code>的组件（通常是Jackson），将<code>User</code>对象序列化成JSON字符串。</p>
+</li>
+<li><p><strong>返回响应</strong>：工人线程<code>http-nio-8080-exec-1</code>带着这个JSON字符串，交还给Tomcat。</p>
+</li>
+<li><p><strong>Tomcat发送数据</strong>：Tomcat将JSON数据打包成一个HTTP响应，通过网络发送回客户端。</p>
+</li>
+<li><p><strong>线程回收</strong>：<code>http-nio-8080-exec-1</code>完成了它的使命，<strong>被交还给线程池</strong>，等待处理下一个请求。</p>
+</li>
+</ol>
+<p>这个流程清晰地展示了，您虽然没有手动创建线程，但Tomcat和Spring框架在背后为您处理了所有复杂的线程管理和请求分发工作。</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>java</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Java单例是如何存储中间变量</title>
+    <url>/2025/09/20/java%E7%9F%A5%E8%AF%86/Java%E5%8D%95%E4%BE%8B%E6%98%AF%E5%A6%82%E4%BD%95%E5%AD%98%E5%82%A8%E4%B8%AD%E9%97%B4%E5%8F%98%E9%87%8F/</url>
+    <content><![CDATA[<p>结论：springboot由于是单例的，因此不能存储类的成员变量。因为会存在2个线程同时对一个类中的成员变量进行修改的问题。因此本地变量绝对不能存值。</p>
+<p>但是如果你在类的方法里面创建局部变量，那么这个局部变量会被放在 栈 上。2个线程同时访问这个单例的时候[[单例如何被多线程执行]]，不同线程的栈里的局部数据 各自不干扰，</p>
+<p>&#x3D;&#x3D;<strong>写在方法里的变量（局部变量）</strong>：因为每个线程都有自己独立的栈内存，所以它们是<strong>线程安全的</strong>。<br> <strong>写在方法外的变量（成员变量）</strong>：因为单例Bean只有一个实例，这个变量是所有线程共享的，直接修改它会产生冲突，所以是<strong>线程不安全的</strong>。但如果这个变量是无状态的，那不安全也无所谓</p>
+<ul>
+<li><p><strong>有状态的成员变量（线程不安全❌）</strong>：</p>
+<ul>
+<li><p><strong>定义</strong>：它的值会因为某一个用户的具体请求而被<strong>修改</strong>。</p>
+</li>
+<li><p><strong>例子</strong>：<code>private int counter;</code> <code>private String currentSessionId;</code></p>
+</li>
+<li><p><strong>结论</strong>：在单例Bean中<strong>绝对禁止</strong>使用。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>无状态的成员变量（线程安全✅）</strong>：</p>
+<ul>
+<li><p><strong>定义</strong>：它的值在程序启动后，通常是<strong>固定不变的、只读的</strong>。它不存储任何与单次请求相关的信息。</p>
+</li>
+<li><p><strong>例子</strong>：<code>@Autowired private RedisTemplate redisTemplate;</code> <code>@Value(&quot;$&#123;app.config.name&#125;&quot;) private final String appName;</code></p>
+</li>
+<li><p><strong>结论</strong>：在单例Bean中<strong>是安全且必要的</strong>。它们是这个单例Bean完成工作所需要的“工具”或“配置”，而不是用来记录工作的“临时笔记”。</p>
+</li>
+</ul>
+</li>
+</ul>
+]]></content>
       <categories>
         <category>技术</category>
       </categories>
