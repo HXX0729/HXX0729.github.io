@@ -983,4 +983,84 @@
         <category>技术</category>
       </categories>
   </entry>
+  <entry>
+    <title>JVM</title>
+    <url>/2025/09/21/java%E7%9F%A5%E8%AF%86/JVM/</url>
+    <content><![CDATA[<p><img src="/../../images/Pasted%20image%2020250921171924.png"><br>字符串会被放在 堆里，在栈里只会存放他的引用。但是由于java和Python一样，string都是 不可变变量，只读的。如果修改则会创建一个新的对象，因此 不会导致2个线程操作一个字符串时出现 数据不一致问题。</p>
+<p>操作数栈就是草稿纸，一行代码计算完之后会从操作数栈出栈，然后把结果存入局部变量表。<br>&#x3D;&#x3D;动态链接（不是一个容器）负责的就是当发生跳转函数B的时候，先去常量池里面找到B的代码地址，然后会把PC的值从原来的下一行代码的地址修改为要跳转后的下一行的地址。方法出口就是会在跳转内层函数前保存执行完之后跳回到刚才要外层的地址。<img src="/../../images/Pasted%20image%2020250921180434.png"></p>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>java</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>JVM调优</title>
+    <url>/2025/09/21/java%E7%9F%A5%E8%AF%86/JVM%E8%B0%83%E4%BC%98/</url>
+    <content><![CDATA[<h1 id="JVM调优"><a href="#JVM调优" class="headerlink" title="JVM调优"></a>JVM调优</h1><h3 id="明确业务场景："><a href="#明确业务场景：" class="headerlink" title="明确业务场景："></a>明确业务场景：</h3><h5 id="1-高吞吐量：批处理，可以容忍单次较大的STW，但是不能太频繁"><a href="#1-高吞吐量：批处理，可以容忍单次较大的STW，但是不能太频繁" class="headerlink" title="1. 高吞吐量：批处理，可以容忍单次较大的STW，但是不能太频繁"></a>1. 高吞吐量：批处理，可以容忍单次较大的STW，但是不能太频繁</h5><p>使用Parallel回收器，因为他在回收的时候会多线程</p>
+<p>设置更大的堆内存</p>
+<p>-XX:GCTimeRatio&#x3D;19 这是一个吞吐量目标，表示期望GC时间占总时间的比例为 1 &#x2F; (1 + 19) &#x3D; 5%</p>
+<h5 id="2-低延迟：web应用，可以频繁GC，但是STW不能太长"><a href="#2-低延迟：web应用，可以频繁GC，但是STW不能太长" class="headerlink" title="2. 低延迟：web应用，可以频繁GC，但是STW不能太长"></a>2. 低延迟：web应用，可以频繁GC，但是STW不能太长</h5><p>使用G1回收器。它的核心优势就是“可预测的停顿时间模型”。<br>因此要合理设置 <strong>基于用户设定的停顿目标</strong>（<code>-XX:MaxGCPauseMillis</code>），G1可以动态地、智能地决定本次回收的工作量（即CSet的大小），从而将停顿时间控制在一个可预期的范围内。 默认是200ms一次的STW</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>java</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Java的垃圾回收（Garbage Collection, GC）</title>
+    <url>/2025/09/21/java%E7%9F%A5%E8%AF%86/Java%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%EF%BC%88Garbage%20Collection,%20GC%EF%BC%89/</url>
+    <content><![CDATA[<h1 id="1-为什么需要垃圾回收？-The-Why"><a href="#1-为什么需要垃圾回收？-The-Why" class="headerlink" title="1. 为什么需要垃圾回收？ (The Why)"></a>1. 为什么需要垃圾回收？ (The Why)</h1><ul>
+<li><p><strong>内存泄漏（Memory Leak）</strong>：忘记释放不再使用的内存，导致内存被耗尽。</p>
+</li>
+<li><p><strong>悬垂指针（Dangling Pointer）</strong>：释放了内存后，仍然试图去使用它，导致程序崩溃或未知错误。</p>
+</li>
+</ul>
+<h1 id="2-回收什么？在哪里回收？-The-What-Where"><a href="#2-回收什么？在哪里回收？-The-What-Where" class="headerlink" title="2. 回收什么？在哪里回收？ (The What &amp; Where)"></a>2. 回收什么？在哪里回收？ (The What &amp; Where)</h1><ul>
+<li><p><strong>在哪里回收</strong>：GC的主要工作区域是&#x3D;&#x3D;**[[JVM]]的堆内存（Heap）&#x3D;&#x3D;**。几乎所有的Java对象实例和数组都在这里被创建。</p>
+</li>
+<li><p><strong>回收什么</strong>：GC回收的是堆中那些<strong>“&#x3D;&#x3D;不再被任何存活的线程所引用&#x3D;&#x3D;”</strong>的对象，我们称这些对象为“垃圾”。</p>
+</li>
+</ul>
+<h1 id="3-何时回收？"><a href="#3-何时回收？" class="headerlink" title="3. 何时回收？"></a>3. 何时回收？</h1><p>内存不够了才会触发回收</p>
+<h1 id="3-5-如何判断对象是否存活"><a href="#3-5-如何判断对象是否存活" class="headerlink" title="3.5 如何判断对象是否存活?"></a>3.5 如何判断对象是否存活?</h1><p>GC Root：所有栈帧的局部变量表里面引用的对象<br>所有从GC Roots里面的对象引用链</p>
+<h1 id="4-Parallel回收器（Java8）"><a href="#4-Parallel回收器（Java8）" class="headerlink" title="4. Parallel回收器（Java8）"></a>4. Parallel回收器（Java8）</h1><p><img src="/../../images/Pasted%20image%2020250921205412.png"></p>
+<h5 id="新生代：标记-复制法，STW短，触发频繁，对业务影响小"><a href="#新生代：标记-复制法，STW短，触发频繁，对业务影响小" class="headerlink" title="新生代：标记-复制法，STW短，触发频繁，对业务影响小"></a>新生代：标记-复制法，STW短，触发频繁，对业务影响小</h5><p>新生成的对象会被放到Eden。每次Minor GC都会统计Eden和启用的Survivor的存活对象，然后放到另一个Survivor。然后两个Survivor的身份就互换。</p>
+<p>由于大部分对象都“朝生夕死”，因此复制的代价低。</p>
+<p>一个对象每撑过一次GC，年龄就会+1， 达到设置的阈值之后就会进入老年代。</p>
+<h5 id="老年代：标记-整理法，STW长，堆业务影响大，应避免频繁发生"><a href="#老年代：标记-整理法，STW长，堆业务影响大，应避免频繁发生" class="headerlink" title="老年代：标记-整理法，STW长，堆业务影响大，应避免频繁发生"></a>老年代：标记-整理法，STW长，堆业务影响大，应避免频繁发生</h5><p>老年代对象的整理需要排列在一起，防止碎片。因此开销大，通常是秒级，理想状态下一天才会一次Major GC</p>
+<h1 id="5-G1回收器（Java9开始）"><a href="#5-G1回收器（Java9开始）" class="headerlink" title="5. G1回收器（Java9开始）"></a>5. G1回收器（Java9开始）</h1><p>内存被分成比如2048个region，region的身份在 空闲，Eden，Survivor，Hugumorous， Old之间反复横跳。</p>
+<h5 id="新生代回收："><a href="#新生代回收：" class="headerlink" title="新生代回收："></a>新生代回收：</h5><p>G1会根据设置的最大STW阈值，判断要不要限制继续GC，都会分别堆E和S区 进行 &#x3D;&#x3D;标记-复制法&#x3D;&#x3D;，将他们复制到空闲region里，然后清理老region。</p>
+<h5 id="老年代回收：mixed-gc"><a href="#老年代回收：mixed-gc" class="headerlink" title="老年代回收：mixed-gc"></a>老年代回收：mixed-gc</h5><p>当O区要回收的时候，采用mixed-gc。清理所有新生代 和 部分 回收价值高的 Old区<br><img src="/../../images/Pasted%20image%2020250921220318.png"><br><a href="JVM%E8%B0%83%E4%BC%98.md">JVM调优</a></p>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>java</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>PostgreSQL 比 Mysql 强在哪？</title>
+    <url>/2025/09/21/%E6%95%B0%E6%8D%AE%E5%BA%93/PostgreSQL%20%E6%AF%94%20Mysql%20%E5%BC%BA%E5%9C%A8%E5%93%AA%EF%BC%9F/</url>
+    <content><![CDATA[<ol>
+<li>Mysql数据页是存放在主键那棵树的叶子节点里。如果在其他维度上简历了索引，那其他的树的叶子节点存放的是主键id，因此你拿到主键id之后，还要去主树再查找一次。（聚簇索引）。<br>而PostgreSQL的所有索引的树的叶子存放的都是指针，数据页存放在堆空间里。因此主键还是其他索引的查找效率是一致的</li>
+</ol>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>数据库</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>静态变量</title>
+    <url>/2025/09/21/java%E7%9F%A5%E8%AF%86/%E9%9D%99%E6%80%81%E5%8F%98%E9%87%8F/</url>
+    <content><![CDATA[<p>静态变量就是用 static 修饰的变量</p>
+<p>和Python一样，静态变量也成为类变量。是专属于类的，不会每个实例都有一个。因此他被存放在JVM的元空间</p>
+<p>生存周期和类一样长，也就是整个程序的寿命</p>
+<p>可以通过类名直接访问</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>java</category>
+      </categories>
+  </entry>
 </search>
