@@ -350,9 +350,41 @@
       </categories>
   </entry>
   <entry>
-    <title>Redis哨兵机制</title>
-    <url>/2025/09/22/Redis/Redis%E5%93%A8%E5%85%B5%E6%9C%BA%E5%88%B6/</url>
-    <content><![CDATA[<p>比如 有主从架构A，B，C<br>现新增3个哨兵D，E，F，负责不断发送Ping Pong监控ABC是否挂了。<br>一旦A挂了，DEF会选举出BC中一个为新的master，更新主从关系，并通知 请求方 更改请求节点。</p>
+    <title>三次握手 与 Socket</title>
+    <url>/2025/09/23/HTTP/%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%20%E4%B8%8E%20Socket/</url>
+    <content><![CDATA[<p><img src="/../../images/f9a747bc4e620d1f520aa708f8262e46.jpg"></p>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>HTTP</category>
+      </categories>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/2025/09/23/HTTP/websocket/</url>
+    <content><![CDATA[<p><img src="/../../images/Pasted%20image%2020250923223937.png"></p>
+<h3 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h3><p>websocket建立连接前会先使用 http协议发送 报文，在头部字段里说想要升级，服务端回复101后，双方的应用层改用websocket通信<br>Tomcat的代码已经实现了处理http协议 和 ws协议的 切换</p>
+<h3 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h3><p>全双工，双方都可以向对方发起消息，利用了TCP的全双工能力，<br>不像HTTP是半双工，同一时间只能有一个人发送数据，是请求-响应模式，服务端不能主动向客户端发送数据</p>
+<p>数据包紧凑，开销比http小</p>
+<h3 id="适用于"><a href="#适用于" class="headerlink" title="适用于"></a>适用于</h3><p>网络聊天，游戏，飞书这样的在线办公应用。服务端需要频繁地向客户端发送数据（不频繁的话可以用不停地发起HTTP请求的伪全双工）</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>RabbitMQ</title>
+    <url>/2025/09/23/java%E7%9F%A5%E8%AF%86/RabbitMQ/</url>
+    <content><![CDATA[<p><img src="/../../images/Pasted%20image%2020250923213611.png"></p>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Redis怎么保证缓存与数据库一致性</title>
+    <url>/2025/09/23/Redis/Redis%E6%80%8E%E4%B9%88%E4%BF%9D%E8%AF%81%E7%BC%93%E5%AD%98%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%80%E8%87%B4%E6%80%A7/</url>
+    <content><![CDATA[<h3 id="1-为什么要直接删除缓存而非修改："><a href="#1-为什么要直接删除缓存而非修改：" class="headerlink" title="1. 为什么要直接删除缓存而非修改："></a>1. 为什么要直接删除缓存而非修改：</h3><p>删除是幂等的，修改不是&#x3D;&#x3D;幂等&#x3D;&#x3D;的。后面的值会覆盖前面的值，这样多次操作下结果顺序可能不一样。而删除的话，就能保证只有db里有数据，下次客户端缓存没命中的话，会去db里查询数据，然后再写回到redis</p>
+<h3 id="2-既然已经确定了要删除缓存，那么问题就变成了-先删除缓存再修改db，还是先修改db再删除缓存？"><a href="#2-既然已经确定了要删除缓存，那么问题就变成了-先删除缓存再修改db，还是先修改db再删除缓存？" class="headerlink" title="2. 既然已经确定了要删除缓存，那么问题就变成了 先删除缓存再修改db，还是先修改db再删除缓存？"></a>2. 既然已经确定了要删除缓存，那么问题就变成了 先删除缓存再修改db，还是先修改db再删除缓存？</h3><h3 id="3-删除缓存-修改db-不好"><a href="#3-删除缓存-修改db-不好" class="headerlink" title="3. 删除缓存 + 修改db(不好)"></a>3. 删除缓存 + 修改db(不好)</h3><p>如果一个线程A要修改数据，先把redis删了。此时B发现缓存空了，就去db读了旧数据，然后把旧数据又写回redis了。此后，A才把正确的数据写入db，导致缓存db不一致。<br><img src="/../../images/Pasted%20image%2020250923170101.png"></p>
+<h3 id="4-删除缓存-修改db-延迟删除-（-延迟双删）"><a href="#4-删除缓存-修改db-延迟删除-（-延迟双删）" class="headerlink" title="4. 删除缓存 + 修改db + 延迟删除 （ 延迟双删）"></a>4. 删除缓存 + 修改db + 延迟删除 （ 延迟双删）</h3><p>确保及时有别的线程在A的db没有更新成功的间隙读到了脏数据并写回了Redis，延迟双删可以保证这个 脏数据的 误写入 最终还是被 删除了</p>
+<h3 id="5-修改db-删除缓存（推荐）"><a href="#5-修改db-删除缓存（推荐）" class="headerlink" title="5.  修改db + 删除缓存（推荐）"></a>5.  修改db + 删除缓存（推荐）</h3><p>除非删除的操作执行失败了，需要设置一个MQ去监控发现失败了就重新去执行删除。<br>其他情况是最好的</p>
 ]]></content>
       <categories>
         <category>技术</category>
@@ -360,7 +392,7 @@
       </categories>
   </entry>
   <entry>
-    <title></title>
+    <title>热点key优化</title>
     <url>/2025/09/22/Redis/%E7%83%AD%E7%82%B9key%E4%BC%98%E5%8C%96/</url>
     <content><![CDATA[<ol>
 <li>提前将hot key备份多份：<br> 比如在一个秒杀活动前，可能 key：“iPhone17”预测将会被频繁访问，因此我们提前在redis里把“iPhone17”复制多份：“iPhone17 copy1”， “iPhone17 copy2”。<br> 然后在请求的时候，随机在copy1,2中选择，这样请求就不会都打在一个key上了</li>
@@ -368,78 +400,13 @@
 <li>使用主从架构，分散读压力</li>
 </ol>
 ]]></content>
-  </entry>
-  <entry>
-    <title>Redis Hash</title>
-    <url>/2025/09/22/Redis/Redis%20Hash/</url>
-    <content><![CDATA[<h3 id="1-核心概念：值（Value）本身是一个字典"><a href="#1-核心概念：值（Value）本身是一个字典" class="headerlink" title="1. 核心概念：值（Value）本身是一个字典"></a>1. 核心概念：值（Value）本身是一个字典</h3><p>Redis的Hash类型，您可以把它理解为一个<strong>“存在值（Value）中的小型字典”</strong>。</p>
-<p>与String类型一个键（Key）只对应一个简单的值不同，一个Hash类型的键，对应的是一个包含<strong>多个字段（Field）和值（Value）的映射表</strong>。</p>
-<p><strong>比喻：</strong></p>
-<blockquote>
-<p>假设您有一个储物柜，用来存放ID为<code>user:1001</code>的用户信息。</p>
-<ul>
-<li><p><strong>如果用String类型</strong>：您需要为每个属性都占用一个独立的柜子。</p>
-<ul>
-<li><p><code>SET user:1001:name &quot;张三&quot;</code></p>
-</li>
-<li><p><code>SET user:1001:age 25</code></p>
-</li>
-<li><p><code>SET user:1001:city &quot;上海&quot;</code></p>
-</li>
-</ul>
-</li>
-<li><p><strong>如果用Hash类型</strong>：您只需要占用<strong>一个</strong>名为<code>user:1001</code>的大柜子。柜子内部被分成了<strong>带标签的小抽屉</strong>。</p>
-<ul>
-<li><p><code>name</code>抽屉里放着<code>&quot;张三&quot;</code>。</p>
-</li>
-<li><p><code>age</code>抽屉里放着<code>&quot;25&quot;</code>。</p>
-</li>
-<li><p><code>city</code>抽屉里放着<code>&quot;上海&quot;</code>。</p>
-</li>
-</ul>
-</li>
-</ul>
-</blockquote>
-<p>这个大柜子就是Hash，里面的小抽屉就是字段（Field）。</p>
-<hr>
-<h3 id="2-常用命令"><a href="#2-常用命令" class="headerlink" title="2. 常用命令"></a>2. 常用命令</h3><ul>
-<li><p><strong>设置&#x2F;新增</strong>：</p>
-<ul>
-<li><p><code>HSET key field value</code>：为一个哈希表<code>key</code>中的字段<code>field</code>设置值<code>value</code>。如果字段已存在，则覆盖；如果不存在，则创建。</p>
-<p>  Code snippet</p>
-  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">HSET user:1001 name &quot;张三&quot;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><code>HSET key field1 value1 field2 value2 ...</code>：一次性设置多个字段和值。</p>
-<p>  Code snippet</p>
-  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">HSET user:1001 age 25 city &quot;上海&quot;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p><strong>获取</strong>：</p>
-<ul>
-<li><p><code>HGET key field</code>：获取指定哈希表中指定字段的值。</p>
-<p>  Code snippet</p>
-  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">HGET user:1001 name  # 返回 &quot;张三&quot;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><code>HMGET key field1 field2 ...</code>：一次性获取多个字段的值。</p>
-</li>
-<li><p><code>HGETALL key</code>：获取该哈希表中<strong>所有</strong>的字段和值。</p>
-</li>
-</ul>
-</li>
-<li><p><strong>删除</strong>：</p>
-<ul>
-<li><code>HDEL key field1 [field2 ...]</code>：删除一个或多个字段。</li>
-</ul>
-</li>
-</ul>
-]]></content>
       <categories>
         <category>技术</category>
-        <category>Redis</category>
+        <category>Reids</category>
       </categories>
   </entry>
   <entry>
-    <title></title>
+    <title>IO多路复用</title>
     <url>/2025/09/22/os/IO%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/</url>
     <content><![CDATA[<ul>
 <li><h5 id="传统单路IO：-线程的阻塞与唤醒"><a href="#传统单路IO：-线程的阻塞与唤醒" class="headerlink" title="传统单路IO：[[线程的阻塞与唤醒]]"></a>传统单路IO：[[线程的阻塞与唤醒]]</h5></li>
@@ -518,6 +485,89 @@
 </ul>
 <p>这极大地减少了用户态和内核态之间的切换次数（相比于每个事件都切换一次），也提升了数据处理的吞吐量，是其高性能的核心所在。</p>
 ]]></content>
+      <categories>
+        <category>技术</category>
+        <category>os</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Redis哨兵机制</title>
+    <url>/2025/09/22/Redis/Redis%E5%93%A8%E5%85%B5%E6%9C%BA%E5%88%B6/</url>
+    <content><![CDATA[<p>比如 有主从架构A，B，C<br>现新增3个哨兵D，E，F，负责不断发送Ping Pong监控ABC是否挂了。<br>一旦A挂了，DEF会选举出BC中一个为新的master，更新主从关系，并通知 请求方 更改请求节点。</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>Redis</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Redis Hash</title>
+    <url>/2025/09/22/Redis/Redis%20Hash/</url>
+    <content><![CDATA[<h3 id="1-核心概念：值（Value）本身是一个字典"><a href="#1-核心概念：值（Value）本身是一个字典" class="headerlink" title="1. 核心概念：值（Value）本身是一个字典"></a>1. 核心概念：值（Value）本身是一个字典</h3><p>Redis的Hash类型，您可以把它理解为一个<strong>“存在值（Value）中的小型字典”</strong>。</p>
+<p>与String类型一个键（Key）只对应一个简单的值不同，一个Hash类型的键，对应的是一个包含<strong>多个字段（Field）和值（Value）的映射表</strong>。</p>
+<p><strong>比喻：</strong></p>
+<blockquote>
+<p>假设您有一个储物柜，用来存放ID为<code>user:1001</code>的用户信息。</p>
+<ul>
+<li><p><strong>如果用String类型</strong>：您需要为每个属性都占用一个独立的柜子。</p>
+<ul>
+<li><p><code>SET user:1001:name &quot;张三&quot;</code></p>
+</li>
+<li><p><code>SET user:1001:age 25</code></p>
+</li>
+<li><p><code>SET user:1001:city &quot;上海&quot;</code></p>
+</li>
+</ul>
+</li>
+<li><p><strong>如果用Hash类型</strong>：您只需要占用<strong>一个</strong>名为<code>user:1001</code>的大柜子。柜子内部被分成了<strong>带标签的小抽屉</strong>。</p>
+<ul>
+<li><p><code>name</code>抽屉里放着<code>&quot;张三&quot;</code>。</p>
+</li>
+<li><p><code>age</code>抽屉里放着<code>&quot;25&quot;</code>。</p>
+</li>
+<li><p><code>city</code>抽屉里放着<code>&quot;上海&quot;</code>。</p>
+</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p>这个大柜子就是Hash，里面的小抽屉就是字段（Field）。</p>
+<hr>
+<h3 id="2-常用命令"><a href="#2-常用命令" class="headerlink" title="2. 常用命令"></a>2. 常用命令</h3><ul>
+<li><p><strong>设置&#x2F;新增</strong>：</p>
+<ul>
+<li><p><code>HSET key field value</code>：为一个哈希表<code>key</code>中的字段<code>field</code>设置值<code>value</code>。如果字段已存在，则覆盖；如果不存在，则创建。</p>
+<p>  Code snippet</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">HSET user:1001 name &quot;张三&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>HSET key field1 value1 field2 value2 ...</code>：一次性设置多个字段和值。</p>
+<p>  Code snippet</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">HSET user:1001 age 25 city &quot;上海&quot;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p><strong>获取</strong>：</p>
+<ul>
+<li><p><code>HGET key field</code>：获取指定哈希表中指定字段的值。</p>
+<p>  Code snippet</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">HGET user:1001 name  # 返回 &quot;张三&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>HMGET key field1 field2 ...</code>：一次性获取多个字段的值。</p>
+</li>
+<li><p><code>HGETALL key</code>：获取该哈希表中<strong>所有</strong>的字段和值。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>删除</strong>：</p>
+<ul>
+<li><code>HDEL key field1 [field2 ...]</code>：删除一个或多个字段。</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>Redis</category>
+      </categories>
   </entry>
   <entry>
     <title>线程的阻塞与唤醒</title>
@@ -1208,13 +1258,8 @@
       </categories>
   </entry>
   <entry>
-    <title></title>
-    <url>/2025/09/19/%E9%9D%A2%E8%AF%95%E9%A1%B9%E7%9B%AE/RAG/Redis/%E6%9C%AA%E5%91%BD%E5%90%8D/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
     <title>为什么不用Java Map本地缓存</title>
-    <url>/2025/09/19/%E9%9D%A2%E8%AF%95%E9%A1%B9%E7%9B%AE/RAG/Redis/%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E7%94%A8Java%20Map%E6%9C%AC%E5%9C%B0%E7%BC%93%E5%AD%98/</url>
+    <url>/2025/09/19/Redis/%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E7%94%A8Java%20Map%E6%9C%AC%E5%9C%B0%E7%BC%93%E5%AD%98/</url>
     <content><![CDATA[<p>因为我们的后端服务是<strong>分布式、多实例部署</strong>的。如果使用本地缓存，用户的第一次请求可能由服务器A处理，第二次请求被负载均衡到了服务器B，服务器B的本地缓存里没有这个用户的对话历史，就会导致记忆丢失。所以，我们需要一个所有后端实例都能访问的<strong>分布式共享缓存</strong>，Redis是这个场景下的业界标准。</p>
 ]]></content>
       <categories>

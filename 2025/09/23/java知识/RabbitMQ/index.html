@@ -1,0 +1,160 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>RabbitMQ | 榴莲千层的小窝</title><meta name="author" content="Durian Crepe"><meta name="copyright" content="Durian Crepe"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta property="og:type" content="article">
+<meta property="og:title" content="RabbitMQ">
+<meta property="og:url" content="http://hxx0729.github.io/2025/09/23/java%E7%9F%A5%E8%AF%86/RabbitMQ/index.html">
+<meta property="og:site_name" content="榴莲千层的小窝">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://hxx0729.github.io/images/oop1.png">
+<meta property="article:published_time" content="2025-09-23T13:35:00.000Z">
+<meta property="article:modified_time" content="2025-09-23T13:36:19.119Z">
+<meta property="article:author" content="Durian Crepe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://hxx0729.github.io/images/oop1.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "RabbitMQ",
+  "url": "http://hxx0729.github.io/2025/09/23/java%E7%9F%A5%E8%AF%86/RabbitMQ/",
+  "image": "http://hxx0729.github.io/images/oop1.png",
+  "datePublished": "2025-09-23T13:35:00.000Z",
+  "dateModified": "2025-09-23T13:36:19.119Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Durian Crepe",
+      "url": "http://HXX0729.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://hxx0729.github.io/2025/09/23/java%E7%9F%A5%E8%AF%86/RabbitMQ/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"No results found for: ${query}","hits_stats":"${hits} articles found"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Failed',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'RabbitMQ',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/my-fonts.css"><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/durian-girl.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">36</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">10</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa-solid fa-house"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa-solid fa-box-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa-solid fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa-solid fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/friends/"><i class="fa-fw fa-solid fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">榴莲千层的小窝</span></a><a class="nav-page-title" href="/"><span class="site-name">RabbitMQ</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  Back to Home</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa-solid fa-house"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa-solid fa-box-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa-solid fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa-solid fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/friends/"><i class="fa-fw fa-solid fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">RabbitMQ</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2025-09-23T13:35:00.000Z" title="Created 2025-09-23 21:35:00">2025-09-23</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2025-09-23T13:36:19.119Z" title="Updated 2025-09-23 21:36:19">2025-09-23</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="container post-content" id="article-container"><p><img src="/../../images/Pasted%20image%2020250923213611.png"></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="http://HXX0729.github.io">Durian Crepe</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="http://hxx0729.github.io/2025/09/23/java%E7%9F%A5%E8%AF%86/RabbitMQ/">http://hxx0729.github.io/2025/09/23/java%E7%9F%A5%E8%AF%86/RabbitMQ/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated.</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/images/oop1.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2025/09/23/HTTP/websocket/" title=""><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">Previous</div><div class="info-item-2"></div></div><div class="info-2"><div class="info-item-1"> 工作流程websocket建立连接前会先使用 http协议发送 报文，在头部字段里说想要升级，服务端回复101后，双方的应用层改用websocket通信Tomcat的代码已经实现了处理http协议 和 ws协议的 切换 优势全双工，双方都可以向对方发起消息，利用了TCP的全双工能力，不像HTTP是半双工，同一时间只能有一个人发送数据，是请求-响应模式，服务端不能主动向客户端发送数据 数据包紧凑，开销比http小 适用于网络聊天，游戏，飞书这样的在线办公应用。服务端需要频繁地向客户端发送数据（不频繁的话可以用不停地发起HTTP请求的伪全双工） </div></div></div></a><a class="pagination-related" href="/2025/09/23/Redis/Redis%E6%80%8E%E4%B9%88%E4%BF%9D%E8%AF%81%E7%BC%93%E5%AD%98%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%80%E8%87%B4%E6%80%A7/" title="Redis怎么保证缓存与数据库一致性"><img class="cover" src="/images/oop1.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">Next</div><div class="info-item-2">Redis怎么保证缓存与数据库一致性</div></div><div class="info-2"><div class="info-item-1">1. 为什么要直接删除缓存而非修改：删除是幂等的，修改不是&#x3D;&#x3D;幂等&#x3D;&#x3D;的。后面的值会覆盖前面的值，这样多次操作下结果顺序可能不一样。而删除的话，就能保证只有db里有数据，下次客户端缓存没命中的话，会去db里查询数据，然后再写回到redis 2. 既然已经确定了要删除缓存，那么问题就变成了 先删除缓存再修改db，还是先修改db再删除缓存？3. 删除缓存 + 修改db(不好)如果一个线程A要修改数据，先把redis删了。此时B发现缓存空了，就去db读了旧数据，然后把旧数据又写回redis了。此后，A才把正确的数据写入db，导致缓存db不一致。 4. 删除缓存 + 修改db + 延迟删除 （ 延迟双删）确保及时有别的线程在A的db没有更新成功的间隙读到了脏数据并写回了Redis，延迟双删可以保证这个 脏数据的 误写入 最终还是被 删除了 5.  修改db + 删除缓存（推荐）除非删除的操作执行失败了，需要设置一个MQ去监控发现失败了就重新去执行删除。其他情况是最好的 </div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/durian-girl.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Durian Crepe</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">36</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">10</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/HXX0729"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">欢迎来到榴莲岛！我将记录我的学习和生活。 头像是榴莲千层姬！</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Posts</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/09/23/HTTP/%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%20%E4%B8%8E%20Socket/" title="三次握手 与 Socket"><img src="/images/sui.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="三次握手 与 Socket"/></a><div class="content"><a class="title" href="/2025/09/23/HTTP/%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%20%E4%B8%8E%20Socket/" title="三次握手 与 Socket">三次握手 与 Socket</a><time datetime="2025-09-23T15:01:00.000Z" title="Created 2025-09-23 23:01:00">2025-09-23</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/09/23/HTTP/websocket/" title="Untitled">Untitled</a><time datetime="2025-09-23T14:38:43.216Z" title="Created 2025-09-23 22:38:43">2025-09-23</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/09/23/java%E7%9F%A5%E8%AF%86/RabbitMQ/" title="RabbitMQ"><img src="/images/oop1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="RabbitMQ"/></a><div class="content"><a class="title" href="/2025/09/23/java%E7%9F%A5%E8%AF%86/RabbitMQ/" title="RabbitMQ">RabbitMQ</a><time datetime="2025-09-23T13:35:00.000Z" title="Created 2025-09-23 21:35:00">2025-09-23</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/09/23/Redis/Redis%E6%80%8E%E4%B9%88%E4%BF%9D%E8%AF%81%E7%BC%93%E5%AD%98%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%80%E8%87%B4%E6%80%A7/" title="Redis怎么保证缓存与数据库一致性"><img src="/images/oop1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Redis怎么保证缓存与数据库一致性"/></a><div class="content"><a class="title" href="/2025/09/23/Redis/Redis%E6%80%8E%E4%B9%88%E4%BF%9D%E8%AF%81%E7%BC%93%E5%AD%98%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%80%E8%87%B4%E6%80%A7/" title="Redis怎么保证缓存与数据库一致性">Redis怎么保证缓存与数据库一致性</a><time datetime="2025-09-23T08:55:00.000Z" title="Created 2025-09-23 16:55:00">2025-09-23</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/09/22/Redis/%E7%83%AD%E7%82%B9key%E4%BC%98%E5%8C%96/" title="热点key优化"><img src="/images/oop1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="热点key优化"/></a><div class="content"><a class="title" href="/2025/09/22/Redis/%E7%83%AD%E7%82%B9key%E4%BC%98%E5%8C%96/" title="热点key优化">热点key优化</a><time datetime="2025-09-22T15:44:00.000Z" title="Created 2025-09-22 23:44:00">2025-09-22</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 By Durian Crepe</span><span class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.4.3</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Settings"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading Database</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>
