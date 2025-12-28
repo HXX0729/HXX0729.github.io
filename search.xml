@@ -2,7 +2,7 @@
 <search>
   <entry>
     <title>Leetcode（连载中）</title>
-    <url>/2025/09/05/lc/Leetcode%EF%BC%88%E8%BF%9E%E8%BD%BD%E4%B8%AD%EF%BC%89/</url>
+    <url>/2025/12/20/lc/Leetcode%EF%BC%88%E8%BF%9E%E8%BD%BD%E4%B8%AD%EF%BC%89/</url>
     <content><![CDATA[<p>&#x3D;&#x3D;哈希&#x3D;&#x3D;</p>
 <h1 id="Day1-字母异位词分组"><a href="#Day1-字母异位词分组" class="headerlink" title="Day1  字母异位词分组"></a>Day1  <a href="https://leetcode.cn/problems/group-anagrams/">字母异位词分组</a></h1><ol>
 <li>sorted(一个string)返回的结果是一个列表，把单词的每个字母排序构成，因此需要使用 “”.join(这个列表) 把他们重新拼会字符串</li>
@@ -350,26 +350,287 @@
       </categories>
   </entry>
   <entry>
-    <title>缓存穿透、缓存击穿、缓存雪崩</title>
-    <url>/2025/10/05/Redis/%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F%E3%80%81%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF%E3%80%81%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9/</url>
-    <content><![CDATA[<h1 id="1-缓存穿透："><a href="#1-缓存穿透：" class="headerlink" title="1. 缓存穿透："></a>1. 缓存穿透：</h1><p>请求redis 里不存在的 key，此时会 穿过 redis 去访问 数据库。大量的请求导致数据库压力激增<br><strong>解决方案</strong>：redis 缓存设置空值，或者 布隆过滤器</p>
-<h1 id="2-缓存击穿："><a href="#2-缓存击穿：" class="headerlink" title="2. 缓存击穿："></a>2. 缓存击穿：</h1><p>一个 key是热点 key，redis 缓存里失效（过期）了（看起来就像被击穿了），导致大量请求被打到 数据库上。<br><strong>解决方案：</strong> 第一个去访问数据库的请求，为这个数据 设置互斥锁 setnx，后面的请求就不会去访问数据库了，而是返回一个默认值。</p>
-<p>法 2：不设置真正的过期时间，而是自己实现逻辑过期时间，当一个请求发现过期时，他会去异步地数据库里更新数据。而由于物理上这个数据在 redis 里没有过期，其他请求会获取到旧数据。</p>
-<h1 id="3-缓存雪崩："><a href="#3-缓存雪崩：" class="headerlink" title="3. 缓存雪崩："></a>3. 缓存雪崩：</h1><p>大量缓存击穿同时发生：比如系统初始化的时候，缓存被一起创建，如果他们的过期时间设置的一样，会导致大量数据在同一时间同时失效<br>也可能是 redis 挂了，导致大量请求直接打到数据库<br><strong>解决方案：</strong> 随机设置过期时间<br>对于 redis 挂了：设置哨兵集群</p>
+    <title>Ragflow 智能切片</title>
+    <url>/2025/12/18/%E9%9D%A2%E8%AF%95%E9%A1%B9%E7%9B%AE/RAG/Ragflow%20%E6%99%BA%E8%83%BD%E5%88%87%E7%89%87/</url>
+    <content><![CDATA[<ol>
+<li>传统切片：按照页数或者字数粗暴的切，比如 200 字一个 chunk<br> 缺点：切片时可能没有考虑到语义信息，导致一个语义块被拆成两部分，那有的关键信息可能就无法被 RAG 召回</li>
+<li>智能切片：<ol>
+<li>先对文档进行 cv，转化成 md 的形式</li>
+<li>切分成自然语义块：根据 换行符，句号先分成一个个 chunk 。如果这个 chunk 的 token 比较少，再尝试和后面一个 chunk 合并，直到 token 数接近设置的阈值</li>
+<li>如果遇到超大语义块：使用次级分隔符，比如：，；进行切割<ol>
+<li>&#x3D;&#x3D;亮点 &#x3D;&#x3D;：overlap 重叠机制：前后 2 个 chunk 会有一定重合，防止关键上下文丢失</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
 ]]></content>
       <categories>
         <category>技术</category>
-        <category>Redis</category>
       </categories>
   </entry>
   <entry>
-    <title></title>
-    <url>/2025/09/25/%E9%9D%A2%E8%AF%95%E9%A1%B9%E7%9B%AE/RAG/JSON%20RPC/</url>
-    <content><![CDATA[]]></content>
+    <title>rerank</title>
+    <url>/2025/12/18/%E9%9D%A2%E8%AF%95%E9%A1%B9%E7%9B%AE/RAG/rerank/</url>
+    <content><![CDATA[<p><img src="/../../../images/Page3%203.jpg"></p>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>RAG</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>RAG流程</title>
+    <url>/2025/12/18/%E9%9D%A2%E8%AF%95%E9%A1%B9%E7%9B%AE/RAG/RAG%E6%B5%81%E7%A8%8B/</url>
+    <content><![CDATA[<p>假设我们上传一份关于某AI芯片的技术白皮书 **<code>QuantumLeap_AI_Chip.pdf</code>**。</p>
+<hr>
+<h3 id="阶段一：数据入库-Ingestion"><a href="#阶段一：数据入库-Ingestion" class="headerlink" title="阶段一：数据入库 (Ingestion)"></a>阶段一：数据入库 (Ingestion)</h3><h4 id="步骤1：原始文档内容-第5页"><a href="#步骤1：原始文档内容-第5页" class="headerlink" title="步骤1：原始文档内容 (第5页)"></a><strong>步骤1：原始文档内容 (第5页)</strong></h4><p>文档第5页有以下内容：</p>
+<blockquote>
+<p><strong>3.1 功耗表现</strong> QuantumLeap AI芯片采用了先进的7nm EUV工艺，通过动态电压频率调整技术（DVFS）实现了卓越的能效比。</p>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>功耗 (瓦)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>空闲模式</td>
+<td>0.5W</td>
+</tr>
+<tr>
+<td>活跃模式</td>
+<td>5W</td>
+</tr>
+<tr>
+<td>峰值模式</td>
+<td>15W</td>
+</tr>
+</tbody></table>
+<p>Export to Sheets</p>
+</blockquote>
+<h4 id="步骤2：-Ragflow-智能切片"><a href="#步骤2：-Ragflow-智能切片" class="headerlink" title="步骤2：[[Ragflow 智能切片]]"></a><strong>步骤2：[[Ragflow 智能切片]]</strong></h4><p>RAGFlow 不会粗暴地从中间切开。它会识别出这里的结构：一个标题、一个段落和一个表格。</p>
+<ul>
+<li><p>它可能会将标题和紧随其后的段落<strong>合并</strong>，因为它们语义紧密且内容不长。这形成了 <strong>Chunk A</strong>。</p>
+</li>
+<li><p>它会将整个表格识别为一个独立的、完整的单元。这形成了 <strong>Chunk B</strong>。</p>
+</li>
+</ul>
+<p>我们得到两个切片：</p>
+<ul>
+<li><p><strong>Chunk A (ID: <code>doc1-chunk-001</code>)</strong>:</p>
+<blockquote>
+<p><strong>文本内容</strong>: “3.1 功耗表现\nQuantumLeap AI芯片采用了先进的7nm EUV工艺，通过动态电压频率调整技术（DVFS）实现了卓越的能效比。”
+  </p>
+</blockquote>
+</li>
+<li><p><strong>Chunk B (ID: <code>doc1-chunk-002</code>)</strong>:</p>
+<blockquote>
+<p><strong>文本内容 (可能被转换为Markdown)</strong>: “| 模式 | 功耗 (瓦) | \n| :— | :— | \n| 空闲模式 | 0.5W | \n| 活跃模式 | 5W | \n| 峰值模式 | 15W |”</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="步骤3：嵌入-Embedding"><a href="#步骤3：嵌入-Embedding" class="headerlink" title="步骤3：嵌入 (Embedding)"></a><strong>步骤3：嵌入 (Embedding)</strong></h4><p>系统使用 Embedding 模型，将这两个切片的文本内容分别转换成向量：</p>
+<ul>
+<li><p><code>Chunk A 的文本</code> -&gt; <code>模型</code> -&gt; <code>Vector_A</code> (一个数字数组，如 <code>[0.15, -0.78, 0.33, ...]</code>)</p>
+</li>
+<li><p><code>Chunk B 的文本</code> -&gt; <code>模型</code> -&gt; <code>Vector_B</code> (另一个数字数组，如 <code>[0.67, 0.21, -0.54, ...]</code>)</p>
+</li>
+</ul>
+<h4 id="步骤4：分别存储"><a href="#步骤4：分别存储" class="headerlink" title="步骤4：分别存储"></a><strong>步骤4：分别存储</strong></h4><p>现在，数据被存入两个数据库：</p>
+<ol>
+<li><p><strong>[[向量数据库]] (以 Milvus 为例)</strong> 这里只关心向量和它的ID，用于快速比较。 | ID | Vector | | :— | :— | | <code>doc1-chunk-001</code> | <code>[0.15, -0.78, 0.33, ...]</code> | | <code>doc1-chunk-002</code> | <code>[0.67, 0.21, -0.54, ...]</code> |</p>
+</li>
+<li><p><strong>关系型数据库 (以 PostgreSQL 为例)</strong> 这里存储所有可读的详细信息。 | chunk_id | content | metadata | | :— | :— | :— | | <code>doc1-chunk-001</code> | “3.1 功耗表现\nQuantumLeap AI芯片…” | <code>&#123; &quot;doc_name&quot;: &quot;QL_AI_Chip.pdf&quot;, &quot;page&quot;: 5, &quot;type&quot;: &quot;text&quot; &#125;</code> | | <code>doc1-chunk-002</code> | “| 模式 | 功耗 (瓦) | \n| :— |…” | <code>&#123; &quot;doc_name&quot;: &quot;QL_AI_Chip.pdf&quot;, &quot;page&quot;: 5, &quot;type&quot;: &quot;table&quot; &#125;</code> |</p>
+</li>
+</ol>
+<hr>
+<h3 id="阶段二：用户查询与召回-Retrieval-余弦相似度计算"><a href="#阶段二：用户查询与召回-Retrieval-余弦相似度计算" class="headerlink" title="阶段二：用户查询与召回 (Retrieval)([[余弦相似度计算]])"></a>阶段二：用户查询与召回 (Retrieval)([[余弦相似度计算]])</h3><h4 id="步骤5：用户提问"><a href="#步骤5：用户提问" class="headerlink" title="步骤5：用户提问"></a><strong>步骤5：用户提问</strong></h4><p>一个用户向系统提问：“<strong>QuantumLeap 芯片在不同模式下的功耗是多少？</strong>”</p>
+<h4 id="步骤6：问题嵌入"><a href="#步骤6：问题嵌入" class="headerlink" title="步骤6：问题嵌入"></a><strong>步骤6：问题嵌入</strong></h4><p>系统使用<strong>完全相同</strong>的 Embedding 模型，将用户的问题也转换成一个向量：</p>
+<ul>
+<li><code>&quot;QuantumLeap 芯片在不同模式下的功耗是多少？&quot;</code> -&gt; <code>模型</code> -&gt; <code>Query_Vector</code> (例如 <code>[0.65, 0.19, -0.51, ...]</code>)</li>
+</ul>
+<h2 id="阶段三：-rerank"><a href="#阶段三：-rerank" class="headerlink" title="阶段三： [[rerank]]"></a>阶段三： [[rerank]]</h2><h4 id="步骤7：向量搜索"><a href="#步骤7：向量搜索" class="headerlink" title="步骤7：向量搜索"></a><strong>步骤7：向量搜索</strong></h4><p>系统拿着 <code>Query_Vector</code> 去<strong>向量数据库</strong>中进行搜索。数据库计算 <code>Query_Vector</code> 与所有已存储向量的“语义相似度”。</p>
+<ul>
+<li><p><code>Query_Vector</code> (<code>[0.65, ...]</code>) 与 <code>Vector_A</code> (<code>[0.15, ...]</code>) 的相似度较低。</p>
+</li>
+<li><p><code>Query_Vector</code> (<code>[0.65, ...]</code>) 与 <code>Vector_B</code> (<code>[0.67, ...]</code>) 的相似度<strong>非常高</strong>，因为它们都包含“模式”和“功耗”的核心语义。</p>
+</li>
+</ul>
+<p>向量数据库返回最匹配的ID列表，排在第一位的是：<code>[&quot;doc1-chunk-002&quot;]</code>。</p>
+<h4 id="步骤8：获取原文"><a href="#步骤8：获取原文" class="headerlink" title="步骤8：获取原文"></a><strong>步骤8：获取原文</strong></h4><p>系统拿到这个胜出的ID <code>doc1-chunk-002</code>，去<strong>关系型数据库</strong>中查找。</p>
+<ul>
+<li>它找到了对应的那一行，取出了 <code>content</code> 字段（也就是那个Markdown格式的表格）和 <code>metadata</code> 字段。</li>
+</ul>
+<h4 id="步骤9：生成答案"><a href="#步骤9：生成答案" class="headerlink" title="步骤9：生成答案"></a><strong>步骤9：生成答案</strong></h4><p>最后，系统将检索到的内容（表格）和用户的原始问题整合在一起，形成一个提示（Prompt），发送给大语言模型（LLM）。</p>
+<ul>
+<li><p><strong>发送给LLM的内容类似：</strong></p>
+<blockquote>
+<p><strong>[背景知识]:</strong> 以下是从文档《QL_AI_Chip.pdf》第5页找到的关于功耗的表格： | 模式 | 功耗 (瓦) | | :— | :— | | 空闲模式 | 0.5W | | 活跃模式 | 5W | | 峰值模式 | 15W |</p>
+<p><strong>[用户问题]:</strong> QuantumLeap 芯片在不同模式下的功耗是多少？</p>
+<p><strong>[指令]:</strong> 请根据以上背景知识回答用户问题。
+  </p>
+</blockquote>
+</li>
+<li><p><strong>LLM输出的最终答案：</strong></p>
+<blockquote>
+<p>QuantumLeap AI芯片在不同模式下的功耗分别为：空闲模式是0.5W，活跃模式是5W，峰值模式是15W。</p>
+</blockquote>
+</li>
+</ul>
+<p>这个例子清晰地展示了两个数据库如何协同工作，通过“向量比对”定位信息，再通过“ID查询”获取原文，最终为用户生成精准的答案。</p>
+<h1 id="为什么使用-2-种数据库？"><a href="#为什么使用-2-种数据库？" class="headerlink" title="为什么使用 2 种数据库？"></a>为什么使用 2 种数据库？</h1><ol>
+<li>[[向量数据库]]对于向量相似度计算有优化，ANN 算法可以在 99.99%的准确率下，实现比关系型数据库 id 查找快 1w 倍</li>
+<li>灵活拓展：采用[[分离式架构]]如果向量相似度计算瓶颈，就只用横向增加向量数据库的集群</li>
+</ol>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>RAG</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>向量数据库</title>
+    <url>/2025/12/18/%E9%9D%A2%E8%AF%95%E9%A1%B9%E7%9B%AE/RAG/%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/</url>
+    <content><![CDATA[<table>
+<thead>
+<tr>
+<th>数据库名称</th>
+<th>类型</th>
+<th>核心优势</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Milvus &#x2F; Zilliz Cloud</strong></td>
+<td>开源 &#x2F; 云服务</td>
+<td>功能全面强大，专为大规模设计</td>
+<td>大规模、高并发的专业AI应用</td>
+</tr>
+<tr>
+<td><strong>Pinecone</strong></td>
+<td>云服务</td>
+<td>简单易用，性能卓越，完全托管</td>
+<td>快速开发，商业生产环境</td>
+</tr>
+<tr>
+<td><strong>Qdrant</strong></td>
+<td>开源</td>
+<td>性能高，高级过滤能力强</td>
+<td>需要复杂过滤规则的生产环境</td>
+</tr>
+<tr>
+<td><strong>Weaviate</strong></td>
+<td>开源</td>
+<td>内置Embedding，图结构，上下文搜索</td>
+<td>需要端到端解决方案，数据有关联性</td>
+</tr>
+<tr>
+<td><strong>ChromaDB</strong></td>
+<td>开源</td>
+<td>轻量，专为AI应用开发流程设计</td>
+<td>本地开发，快速原型，中小型项目</td>
+</tr>
+<tr>
+<td><strong>PostgreSQL + pgvector</strong></td>
+<td>数据库扩展</td>
+<td>技术栈简单，与现有数据无缝集成</td>
+<td>已使用Postgres的中小型项目</td>
+</tr>
+<tr>
+<td><strong>Redis + RediSearch</strong></td>
+<td>数据库扩展</td>
+<td>内存级速度，实时性强</td>
+<td>对延迟要求极高的实时应用</td>
+</tr>
+<tr>
+<td><strong>Faiss</strong></td>
+<td>库</td>
+<td>算法核心，极致的定制化和性能</td>
+<td>深度集成到自定义应用中</td>
+</tr>
+</tbody></table>
+<p>当然，很高兴您对这个例子感兴趣。结合这个例子来理解“为什么需要两个数据库”以及“向量数据库的优势”，可以帮助我们更深刻地理解现代RAG架构的精妙之处。</p>
+<p>我们可以用一个非常贴切的比喻来概括：</p>
+<p><strong>把整个知识库想象成一个大型图书馆。</strong></p>
+<ul>
+<li><p><strong>关系型数据库 (PostgreSQL)</strong> 就是存放所有实体<strong>书籍的书架</strong>。每本书（Chunk原文）都有一个精确的编号（<code>chunk_id</code>），只要你知道编号，就能瞬间找到这本书。</p>
+</li>
+<li><p><strong>向量数据库 (Milvus&#x2F;Chroma)</strong> 则是图书馆的<strong>智能搜索引擎&#x2F;索引目录</strong>。它不存放书本身，而是存放了每本书核心思想的“摘要”和“概念坐标”（Vector）。</p>
+</li>
+</ul>
+<p>你不会只用其中一个，因为它们的功能完全不同但又相辅相成。</p>
+<hr>
+<h3 id="为什么要使用两个数据库：专业分工，强强联合"><a href="#为什么要使用两个数据库：专业分工，强强联合" class="headerlink" title="为什么要使用两个数据库：专业分工，强强联合"></a>为什么要使用两个数据库：专业分工，强强联合</h3><p>不将向量和原文存在一起，主要是出于<strong>性能、功能和扩展性</strong>的极致追求。这是一种典型的“专业分工”思想。</p>
+<ol>
+<li><p><strong>核心功能完全不同 (Specialized Functions):</strong></p>
+<ul>
+<li><p><strong>关系型数据库的专长：</strong></p>
+<ul>
+<li><p><strong>精确查询：</strong> 它的核心是结构化数据管理。执行 <code>SELECT content FROM chunks WHERE chunk_id = &#39;doc1-chunk-002&#39;</code> 这种基于精确键值的查询，速度快如闪电。</p>
+</li>
+<li><p><strong>事务与一致性：</strong> 保证数据的ACID特性（原子性、一致性、隔离性、持久性），对于管理知识库、用户信息等关键数据至关重要。</p>
+</li>
+<li><p><strong>存储原文最合适：</strong> 存储文本、页码、文档名这些结构化的[[元数据]]，是它的“本职工作”。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>向量数据库的专长：</strong></p>
+<ul>
+<li><strong>模糊&#x2F;语义搜索：</strong> 它的唯一使命就是在亿万级的高维向量中，进行超高速的<strong>相似度搜索</strong>。它要回答的问题不是“ID为X的内容是什么”，而是“和这个意思最像的内容是哪些”。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>性能优化方向不同 (Different Performance Optimizations):</strong></p>
+<ul>
+<li><p>关系型数据库如果要计算相似度，它需要做“暴力”的全表扫描：取出每一条记录，计算它和查询向量的余弦相似度，然后排序。当数据量变大时，这会慢到无法接受。</p>
+</li>
+<li><p>向量数据库则使用了专门的**[[近似最近邻（ANN）算法]]**（如 HNSW、IVF-PQ 等）。这些算法通过构建特殊的索引结构，可以牺牲极小的精度（比如99.9%的准确率）来换取成千上万倍的搜索速度，实现毫秒级的响应。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>扩展性与成本考量 (Scalability and Cost):</strong></p>
+<ul>
+<li><p>向量计算和存储是资源密集型的，尤其是在大规模场景下。将向量系统独立出来，意味着当搜索成为瓶颈时，你可以<strong>独立地扩展向量数据库集群</strong>，而不用动存储原文的关系型数据库。</p>
+</li>
+<li><p>反之亦然，如果只是文档数量增多，你可以只扩展关系型数据库的存储。这种**[[分离式架构]]**让系统扩展更灵活，成本也更可控。</p>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="向量数据库的核心优势"><a href="#向量数据库的核心优势" class="headerlink" title="向量数据库的核心优势"></a>向量数据库的核心优势</h3><p>现在我们来聚焦向量数据库本身，它到底“神”在哪里？</p>
+<ol>
+<li><p><strong>超越关键词匹配，实现真正的&#x3D;&#x3D;[[语义理解]]&#x3D;&#x3D;：</strong> 这是它与传统搜索引擎（如Elasticsearch的BM25算法）最根本的区别。</p>
+<ul>
+<li><p><strong>关键词搜索：</strong> 你搜“汽车”，它只会返回包含“汽车”这个词的文档。它不认识“轿车”或“automobile”。</p>
+</li>
+<li><p><strong>向量搜索：</strong> 你搜“汽车”，它的查询向量会和“轿车”、“automobile”、“车辆”等词的向量在语义空间中非常接近。因此，即使原文中没有“汽车”这个词，但只要意思相关，就能被准确地召回。</p>
+</li>
+<li><p><strong>在我们的例子中：</strong> 用户问“芯片功耗是多少”，即使原文Chunk B中没有“多少”这个词，但向量模型理解了问题的核心意图是查询“功耗”的“数值”，因此能精准匹配到包含功耗数据的表格。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>为&#x3D;&#x3D;[[非结构化数据]]而生：</strong> 文本、图片、音频、视频&#x3D;&#x3D;……这些都是非结构化数据，无法直接存入传统数据库的行列中进行有意义的查询。但通过[[Embedding]]模型，这些数据都可以被转换成向量。向量数据库使得<strong>对一切非结构化数据进行语义搜索</strong>成为了可能。</p>
+</li>
+<li><p><strong>极致的查询性能与高扩展性：</strong> 如前所述，通过专门的ANN索引算法，向量数据库可以在数十亿规模的数据集上实现毫秒级的相似度查询。并且它们通常被设计为分布式系统，可以水平扩展以应对不断增长的数据量。</p>
+</li>
+<li><p><strong>&#x3D;&#x3D;专为AI应用打造：</strong> 向量数据库是AI时代的产物，它完美承接了深度学习模型（尤其是Embedding模型）的输出。它不仅仅是一个存储系统，更是连接模型理解能力与实际应用的桥梁，是构建大模型记忆体、推荐系统、图像检索等众多AI应用的核心基础设施。</p>
+</li>
+</ol>
+<p><strong>总结一下：</strong></p>
+<p>使用两个数据库，就像我们的大脑一样。关系型数据库像是负责<strong>精确记忆</strong>的“海马体”，能准确无误地调取“昨天晚饭吃了什么”；而向量数据库则像是负责<strong>联想与归纳</strong>的“新皮层”，当你想到“假期”时，它会为你链接到“沙滩”、“旅游”、“放松”等一系列相关概念。</p>
+<p>在RAG中，正是这种<strong>精确存储</strong>与<strong>智能联想</strong>的完美结合，才让系统既能“记得准”，又能“想得到”，从而实现了高质量的知识检索与生成。</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>RAG</category>
+      </categories>
   </entry>
   <entry>
     <title>websocket</title>
-    <url>/2025/09/23/HTTP/websocket/</url>
+    <url>/2025/11/23/HTTP/websocket/</url>
     <content><![CDATA[<p><img src="/../../images/Pasted%20image%2020250923223937.png"></p>
 <h3 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h3><p>websocket建立连接前会先使用 http协议发送 报文，在头部字段里说想要升级，服务端回复101后，双方的应用层改用websocket通信<br>Tomcat的代码已经实现了处理http协议 和 ws协议的 切换</p>
 <h3 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h3><p>全双工，双方都可以向对方发起消息，利用了TCP的全双工能力，<br>不像HTTP是半双工，同一时间只能有一个人发送数据，是请求-响应模式，服务端不能主动向客户端发送数据</p>
@@ -382,12 +643,25 @@
   </entry>
   <entry>
     <title>三次握手 与 Socket</title>
-    <url>/2025/09/23/HTTP/%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%20%E4%B8%8E%20Socket/</url>
+    <url>/2025/11/23/HTTP/%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%20%E4%B8%8E%20Socket/</url>
     <content><![CDATA[<p><img src="/../../images/f9a747bc4e620d1f520aa708f8262e46.jpg"></p>
 ]]></content>
       <categories>
         <category>技术</category>
         <category>HTTP</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>缓存穿透、缓存击穿、缓存雪崩</title>
+    <url>/2025/10/05/Redis/%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F%E3%80%81%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF%E3%80%81%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9/</url>
+    <content><![CDATA[<h1 id="1-缓存穿透："><a href="#1-缓存穿透：" class="headerlink" title="1. 缓存穿透："></a>1. 缓存穿透：</h1><p>请求redis 里不存在的 key，此时会 穿过 redis 去访问 数据库。大量的请求导致数据库压力激增<br><strong>解决方案</strong>：redis 缓存设置空值，或者 布隆过滤器</p>
+<h1 id="2-缓存击穿："><a href="#2-缓存击穿：" class="headerlink" title="2. 缓存击穿："></a>2. 缓存击穿：</h1><p>一个 key是热点 key，redis 缓存里失效（过期）了（看起来就像被击穿了），导致大量请求被打到 数据库上。<br><strong>解决方案：</strong> 第一个去访问数据库的请求，为这个数据 设置互斥锁 setnx，后面的请求就不会去访问数据库了，而是返回一个默认值。</p>
+<p>法 2：不设置真正的过期时间，而是自己实现逻辑过期时间，当一个请求发现过期时，他会去异步地数据库里更新数据。而由于物理上这个数据在 redis 里没有过期，其他请求会获取到旧数据。</p>
+<h1 id="3-缓存雪崩："><a href="#3-缓存雪崩：" class="headerlink" title="3. 缓存雪崩："></a>3. 缓存雪崩：</h1><p>大量缓存击穿同时发生：比如系统初始化的时候，缓存被一起创建，如果他们的过期时间设置的一样，会导致大量数据在同一时间同时失效<br>也可能是 redis 挂了，导致大量请求直接打到数据库<br><strong>解决方案：</strong> 随机设置过期时间<br>对于 redis 挂了：设置哨兵集群</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>Redis</category>
       </categories>
   </entry>
   <entry>
@@ -1315,288 +1589,9 @@
       </categories>
   </entry>
   <entry>
-    <title>Ragflow 智能切片</title>
-    <url>/2025/09/18/%E9%9D%A2%E8%AF%95%E9%A1%B9%E7%9B%AE/RAG/Ragflow%20%E6%99%BA%E8%83%BD%E5%88%87%E7%89%87/</url>
-    <content><![CDATA[<ol>
-<li>传统切片：按照页数或者字数粗暴的切，比如 200 字一个 chunk<br> 缺点：切片时可能没有考虑到语义信息，导致一个语义块被拆成两部分，那有的关键信息可能就无法被 RAG 召回</li>
-<li>智能切片：<ol>
-<li>先对文档进行 cv，转化成 md 的形式</li>
-<li>切分成自然语义块：根据 换行符，句号先分成一个个 chunk 。如果这个 chunk 的 token 比较少，再尝试和后面一个 chunk 合并，直到 token 数接近设置的阈值</li>
-<li>如果遇到超大语义块：使用次级分隔符，比如：，；进行切割<ol>
-<li>&#x3D;&#x3D;亮点 &#x3D;&#x3D;：overlap 重叠机制：前后 2 个 chunk 会有一定重合，防止关键上下文丢失</li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>rerank</title>
-    <url>/2025/09/18/%E9%9D%A2%E8%AF%95%E9%A1%B9%E7%9B%AE/RAG/rerank/</url>
-    <content><![CDATA[<p><img src="/../../../images/Page3%203.jpg"></p>
-]]></content>
-      <categories>
-        <category>技术</category>
-        <category>RAG</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Embedding</title>
     <url>/2025/09/18/%E9%9D%A2%E8%AF%95%E9%A1%B9%E7%9B%AE/RAG/Embedding/</url>
     <content><![CDATA[<p><img src="/../../../images/Page1%203%201.jpg"><img src="/../../../images/Page2%203%201.jpg"></p>
-]]></content>
-      <categories>
-        <category>技术</category>
-        <category>RAG</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>RAG流程</title>
-    <url>/2025/09/18/%E9%9D%A2%E8%AF%95%E9%A1%B9%E7%9B%AE/RAG/RAG%E6%B5%81%E7%A8%8B/</url>
-    <content><![CDATA[<p>假设我们上传一份关于某AI芯片的技术白皮书 **<code>QuantumLeap_AI_Chip.pdf</code>**。</p>
-<hr>
-<h3 id="阶段一：数据入库-Ingestion"><a href="#阶段一：数据入库-Ingestion" class="headerlink" title="阶段一：数据入库 (Ingestion)"></a>阶段一：数据入库 (Ingestion)</h3><h4 id="步骤1：原始文档内容-第5页"><a href="#步骤1：原始文档内容-第5页" class="headerlink" title="步骤1：原始文档内容 (第5页)"></a><strong>步骤1：原始文档内容 (第5页)</strong></h4><p>文档第5页有以下内容：</p>
-<blockquote>
-<p><strong>3.1 功耗表现</strong> QuantumLeap AI芯片采用了先进的7nm EUV工艺，通过动态电压频率调整技术（DVFS）实现了卓越的能效比。</p>
-<table>
-<thead>
-<tr>
-<th>模式</th>
-<th>功耗 (瓦)</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>空闲模式</td>
-<td>0.5W</td>
-</tr>
-<tr>
-<td>活跃模式</td>
-<td>5W</td>
-</tr>
-<tr>
-<td>峰值模式</td>
-<td>15W</td>
-</tr>
-</tbody></table>
-<p>Export to Sheets</p>
-</blockquote>
-<h4 id="步骤2：-Ragflow-智能切片"><a href="#步骤2：-Ragflow-智能切片" class="headerlink" title="步骤2：[[Ragflow 智能切片]]"></a><strong>步骤2：[[Ragflow 智能切片]]</strong></h4><p>RAGFlow 不会粗暴地从中间切开。它会识别出这里的结构：一个标题、一个段落和一个表格。</p>
-<ul>
-<li><p>它可能会将标题和紧随其后的段落<strong>合并</strong>，因为它们语义紧密且内容不长。这形成了 <strong>Chunk A</strong>。</p>
-</li>
-<li><p>它会将整个表格识别为一个独立的、完整的单元。这形成了 <strong>Chunk B</strong>。</p>
-</li>
-</ul>
-<p>我们得到两个切片：</p>
-<ul>
-<li><p><strong>Chunk A (ID: <code>doc1-chunk-001</code>)</strong>:</p>
-<blockquote>
-<p><strong>文本内容</strong>: “3.1 功耗表现\nQuantumLeap AI芯片采用了先进的7nm EUV工艺，通过动态电压频率调整技术（DVFS）实现了卓越的能效比。”
-  </p>
-</blockquote>
-</li>
-<li><p><strong>Chunk B (ID: <code>doc1-chunk-002</code>)</strong>:</p>
-<blockquote>
-<p><strong>文本内容 (可能被转换为Markdown)</strong>: “| 模式 | 功耗 (瓦) | \n| :— | :— | \n| 空闲模式 | 0.5W | \n| 活跃模式 | 5W | \n| 峰值模式 | 15W |”</p>
-</blockquote>
-</li>
-</ul>
-<h4 id="步骤3：嵌入-Embedding"><a href="#步骤3：嵌入-Embedding" class="headerlink" title="步骤3：嵌入 (Embedding)"></a><strong>步骤3：嵌入 (Embedding)</strong></h4><p>系统使用 Embedding 模型，将这两个切片的文本内容分别转换成向量：</p>
-<ul>
-<li><p><code>Chunk A 的文本</code> -&gt; <code>模型</code> -&gt; <code>Vector_A</code> (一个数字数组，如 <code>[0.15, -0.78, 0.33, ...]</code>)</p>
-</li>
-<li><p><code>Chunk B 的文本</code> -&gt; <code>模型</code> -&gt; <code>Vector_B</code> (另一个数字数组，如 <code>[0.67, 0.21, -0.54, ...]</code>)</p>
-</li>
-</ul>
-<h4 id="步骤4：分别存储"><a href="#步骤4：分别存储" class="headerlink" title="步骤4：分别存储"></a><strong>步骤4：分别存储</strong></h4><p>现在，数据被存入两个数据库：</p>
-<ol>
-<li><p><strong>[[向量数据库]] (以 Milvus 为例)</strong> 这里只关心向量和它的ID，用于快速比较。 | ID | Vector | | :— | :— | | <code>doc1-chunk-001</code> | <code>[0.15, -0.78, 0.33, ...]</code> | | <code>doc1-chunk-002</code> | <code>[0.67, 0.21, -0.54, ...]</code> |</p>
-</li>
-<li><p><strong>关系型数据库 (以 PostgreSQL 为例)</strong> 这里存储所有可读的详细信息。 | chunk_id | content | metadata | | :— | :— | :— | | <code>doc1-chunk-001</code> | “3.1 功耗表现\nQuantumLeap AI芯片…” | <code>&#123; &quot;doc_name&quot;: &quot;QL_AI_Chip.pdf&quot;, &quot;page&quot;: 5, &quot;type&quot;: &quot;text&quot; &#125;</code> | | <code>doc1-chunk-002</code> | “| 模式 | 功耗 (瓦) | \n| :— |…” | <code>&#123; &quot;doc_name&quot;: &quot;QL_AI_Chip.pdf&quot;, &quot;page&quot;: 5, &quot;type&quot;: &quot;table&quot; &#125;</code> |</p>
-</li>
-</ol>
-<hr>
-<h3 id="阶段二：用户查询与召回-Retrieval-余弦相似度计算"><a href="#阶段二：用户查询与召回-Retrieval-余弦相似度计算" class="headerlink" title="阶段二：用户查询与召回 (Retrieval)([[余弦相似度计算]])"></a>阶段二：用户查询与召回 (Retrieval)([[余弦相似度计算]])</h3><h4 id="步骤5：用户提问"><a href="#步骤5：用户提问" class="headerlink" title="步骤5：用户提问"></a><strong>步骤5：用户提问</strong></h4><p>一个用户向系统提问：“<strong>QuantumLeap 芯片在不同模式下的功耗是多少？</strong>”</p>
-<h4 id="步骤6：问题嵌入"><a href="#步骤6：问题嵌入" class="headerlink" title="步骤6：问题嵌入"></a><strong>步骤6：问题嵌入</strong></h4><p>系统使用<strong>完全相同</strong>的 Embedding 模型，将用户的问题也转换成一个向量：</p>
-<ul>
-<li><code>&quot;QuantumLeap 芯片在不同模式下的功耗是多少？&quot;</code> -&gt; <code>模型</code> -&gt; <code>Query_Vector</code> (例如 <code>[0.65, 0.19, -0.51, ...]</code>)</li>
-</ul>
-<h2 id="阶段三：-rerank"><a href="#阶段三：-rerank" class="headerlink" title="阶段三： [[rerank]]"></a>阶段三： [[rerank]]</h2><h4 id="步骤7：向量搜索"><a href="#步骤7：向量搜索" class="headerlink" title="步骤7：向量搜索"></a><strong>步骤7：向量搜索</strong></h4><p>系统拿着 <code>Query_Vector</code> 去<strong>向量数据库</strong>中进行搜索。数据库计算 <code>Query_Vector</code> 与所有已存储向量的“语义相似度”。</p>
-<ul>
-<li><p><code>Query_Vector</code> (<code>[0.65, ...]</code>) 与 <code>Vector_A</code> (<code>[0.15, ...]</code>) 的相似度较低。</p>
-</li>
-<li><p><code>Query_Vector</code> (<code>[0.65, ...]</code>) 与 <code>Vector_B</code> (<code>[0.67, ...]</code>) 的相似度<strong>非常高</strong>，因为它们都包含“模式”和“功耗”的核心语义。</p>
-</li>
-</ul>
-<p>向量数据库返回最匹配的ID列表，排在第一位的是：<code>[&quot;doc1-chunk-002&quot;]</code>。</p>
-<h4 id="步骤8：获取原文"><a href="#步骤8：获取原文" class="headerlink" title="步骤8：获取原文"></a><strong>步骤8：获取原文</strong></h4><p>系统拿到这个胜出的ID <code>doc1-chunk-002</code>，去<strong>关系型数据库</strong>中查找。</p>
-<ul>
-<li>它找到了对应的那一行，取出了 <code>content</code> 字段（也就是那个Markdown格式的表格）和 <code>metadata</code> 字段。</li>
-</ul>
-<h4 id="步骤9：生成答案"><a href="#步骤9：生成答案" class="headerlink" title="步骤9：生成答案"></a><strong>步骤9：生成答案</strong></h4><p>最后，系统将检索到的内容（表格）和用户的原始问题整合在一起，形成一个提示（Prompt），发送给大语言模型（LLM）。</p>
-<ul>
-<li><p><strong>发送给LLM的内容类似：</strong></p>
-<blockquote>
-<p><strong>[背景知识]:</strong> 以下是从文档《QL_AI_Chip.pdf》第5页找到的关于功耗的表格： | 模式 | 功耗 (瓦) | | :— | :— | | 空闲模式 | 0.5W | | 活跃模式 | 5W | | 峰值模式 | 15W |</p>
-<p><strong>[用户问题]:</strong> QuantumLeap 芯片在不同模式下的功耗是多少？</p>
-<p><strong>[指令]:</strong> 请根据以上背景知识回答用户问题。
-  </p>
-</blockquote>
-</li>
-<li><p><strong>LLM输出的最终答案：</strong></p>
-<blockquote>
-<p>QuantumLeap AI芯片在不同模式下的功耗分别为：空闲模式是0.5W，活跃模式是5W，峰值模式是15W。</p>
-</blockquote>
-</li>
-</ul>
-<p>这个例子清晰地展示了两个数据库如何协同工作，通过“向量比对”定位信息，再通过“ID查询”获取原文，最终为用户生成精准的答案。</p>
-<h1 id="为什么使用-2-种数据库？"><a href="#为什么使用-2-种数据库？" class="headerlink" title="为什么使用 2 种数据库？"></a>为什么使用 2 种数据库？</h1><ol>
-<li>[[向量数据库]]对于向量相似度计算有优化，ANN 算法可以在 99.99%的准确率下，实现比关系型数据库 id 查找快 1w 倍</li>
-<li>灵活拓展：采用[[分离式架构]]如果向量相似度计算瓶颈，就只用横向增加向量数据库的集群</li>
-</ol>
-]]></content>
-      <categories>
-        <category>技术</category>
-        <category>RAG</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>向量数据库</title>
-    <url>/2025/09/18/%E9%9D%A2%E8%AF%95%E9%A1%B9%E7%9B%AE/RAG/%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/</url>
-    <content><![CDATA[<table>
-<thead>
-<tr>
-<th>数据库名称</th>
-<th>类型</th>
-<th>核心优势</th>
-<th>适用场景</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>Milvus &#x2F; Zilliz Cloud</strong></td>
-<td>开源 &#x2F; 云服务</td>
-<td>功能全面强大，专为大规模设计</td>
-<td>大规模、高并发的专业AI应用</td>
-</tr>
-<tr>
-<td><strong>Pinecone</strong></td>
-<td>云服务</td>
-<td>简单易用，性能卓越，完全托管</td>
-<td>快速开发，商业生产环境</td>
-</tr>
-<tr>
-<td><strong>Qdrant</strong></td>
-<td>开源</td>
-<td>性能高，高级过滤能力强</td>
-<td>需要复杂过滤规则的生产环境</td>
-</tr>
-<tr>
-<td><strong>Weaviate</strong></td>
-<td>开源</td>
-<td>内置Embedding，图结构，上下文搜索</td>
-<td>需要端到端解决方案，数据有关联性</td>
-</tr>
-<tr>
-<td><strong>ChromaDB</strong></td>
-<td>开源</td>
-<td>轻量，专为AI应用开发流程设计</td>
-<td>本地开发，快速原型，中小型项目</td>
-</tr>
-<tr>
-<td><strong>PostgreSQL + pgvector</strong></td>
-<td>数据库扩展</td>
-<td>技术栈简单，与现有数据无缝集成</td>
-<td>已使用Postgres的中小型项目</td>
-</tr>
-<tr>
-<td><strong>Redis + RediSearch</strong></td>
-<td>数据库扩展</td>
-<td>内存级速度，实时性强</td>
-<td>对延迟要求极高的实时应用</td>
-</tr>
-<tr>
-<td><strong>Faiss</strong></td>
-<td>库</td>
-<td>算法核心，极致的定制化和性能</td>
-<td>深度集成到自定义应用中</td>
-</tr>
-</tbody></table>
-<p>当然，很高兴您对这个例子感兴趣。结合这个例子来理解“为什么需要两个数据库”以及“向量数据库的优势”，可以帮助我们更深刻地理解现代RAG架构的精妙之处。</p>
-<p>我们可以用一个非常贴切的比喻来概括：</p>
-<p><strong>把整个知识库想象成一个大型图书馆。</strong></p>
-<ul>
-<li><p><strong>关系型数据库 (PostgreSQL)</strong> 就是存放所有实体<strong>书籍的书架</strong>。每本书（Chunk原文）都有一个精确的编号（<code>chunk_id</code>），只要你知道编号，就能瞬间找到这本书。</p>
-</li>
-<li><p><strong>向量数据库 (Milvus&#x2F;Chroma)</strong> 则是图书馆的<strong>智能搜索引擎&#x2F;索引目录</strong>。它不存放书本身，而是存放了每本书核心思想的“摘要”和“概念坐标”（Vector）。</p>
-</li>
-</ul>
-<p>你不会只用其中一个，因为它们的功能完全不同但又相辅相成。</p>
-<hr>
-<h3 id="为什么要使用两个数据库：专业分工，强强联合"><a href="#为什么要使用两个数据库：专业分工，强强联合" class="headerlink" title="为什么要使用两个数据库：专业分工，强强联合"></a>为什么要使用两个数据库：专业分工，强强联合</h3><p>不将向量和原文存在一起，主要是出于<strong>性能、功能和扩展性</strong>的极致追求。这是一种典型的“专业分工”思想。</p>
-<ol>
-<li><p><strong>核心功能完全不同 (Specialized Functions):</strong></p>
-<ul>
-<li><p><strong>关系型数据库的专长：</strong></p>
-<ul>
-<li><p><strong>精确查询：</strong> 它的核心是结构化数据管理。执行 <code>SELECT content FROM chunks WHERE chunk_id = &#39;doc1-chunk-002&#39;</code> 这种基于精确键值的查询，速度快如闪电。</p>
-</li>
-<li><p><strong>事务与一致性：</strong> 保证数据的ACID特性（原子性、一致性、隔离性、持久性），对于管理知识库、用户信息等关键数据至关重要。</p>
-</li>
-<li><p><strong>存储原文最合适：</strong> 存储文本、页码、文档名这些结构化的[[元数据]]，是它的“本职工作”。</p>
-</li>
-</ul>
-</li>
-<li><p><strong>向量数据库的专长：</strong></p>
-<ul>
-<li><strong>模糊&#x2F;语义搜索：</strong> 它的唯一使命就是在亿万级的高维向量中，进行超高速的<strong>相似度搜索</strong>。它要回答的问题不是“ID为X的内容是什么”，而是“和这个意思最像的内容是哪些”。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><strong>性能优化方向不同 (Different Performance Optimizations):</strong></p>
-<ul>
-<li><p>关系型数据库如果要计算相似度，它需要做“暴力”的全表扫描：取出每一条记录，计算它和查询向量的余弦相似度，然后排序。当数据量变大时，这会慢到无法接受。</p>
-</li>
-<li><p>向量数据库则使用了专门的**[[近似最近邻（ANN）算法]]**（如 HNSW、IVF-PQ 等）。这些算法通过构建特殊的索引结构，可以牺牲极小的精度（比如99.9%的准确率）来换取成千上万倍的搜索速度，实现毫秒级的响应。</p>
-</li>
-</ul>
-</li>
-<li><p><strong>扩展性与成本考量 (Scalability and Cost):</strong></p>
-<ul>
-<li><p>向量计算和存储是资源密集型的，尤其是在大规模场景下。将向量系统独立出来，意味着当搜索成为瓶颈时，你可以<strong>独立地扩展向量数据库集群</strong>，而不用动存储原文的关系型数据库。</p>
-</li>
-<li><p>反之亦然，如果只是文档数量增多，你可以只扩展关系型数据库的存储。这种**[[分离式架构]]**让系统扩展更灵活，成本也更可控。</p>
-</li>
-</ul>
-</li>
-</ol>
-<hr>
-<h3 id="向量数据库的核心优势"><a href="#向量数据库的核心优势" class="headerlink" title="向量数据库的核心优势"></a>向量数据库的核心优势</h3><p>现在我们来聚焦向量数据库本身，它到底“神”在哪里？</p>
-<ol>
-<li><p><strong>超越关键词匹配，实现真正的&#x3D;&#x3D;[[语义理解]]&#x3D;&#x3D;：</strong> 这是它与传统搜索引擎（如Elasticsearch的BM25算法）最根本的区别。</p>
-<ul>
-<li><p><strong>关键词搜索：</strong> 你搜“汽车”，它只会返回包含“汽车”这个词的文档。它不认识“轿车”或“automobile”。</p>
-</li>
-<li><p><strong>向量搜索：</strong> 你搜“汽车”，它的查询向量会和“轿车”、“automobile”、“车辆”等词的向量在语义空间中非常接近。因此，即使原文中没有“汽车”这个词，但只要意思相关，就能被准确地召回。</p>
-</li>
-<li><p><strong>在我们的例子中：</strong> 用户问“芯片功耗是多少”，即使原文Chunk B中没有“多少”这个词，但向量模型理解了问题的核心意图是查询“功耗”的“数值”，因此能精准匹配到包含功耗数据的表格。</p>
-</li>
-</ul>
-</li>
-<li><p><strong>为&#x3D;&#x3D;[[非结构化数据]]而生：</strong> 文本、图片、音频、视频&#x3D;&#x3D;……这些都是非结构化数据，无法直接存入传统数据库的行列中进行有意义的查询。但通过[[Embedding]]模型，这些数据都可以被转换成向量。向量数据库使得<strong>对一切非结构化数据进行语义搜索</strong>成为了可能。</p>
-</li>
-<li><p><strong>极致的查询性能与高扩展性：</strong> 如前所述，通过专门的ANN索引算法，向量数据库可以在数十亿规模的数据集上实现毫秒级的相似度查询。并且它们通常被设计为分布式系统，可以水平扩展以应对不断增长的数据量。</p>
-</li>
-<li><p><strong>&#x3D;&#x3D;专为AI应用打造：</strong> 向量数据库是AI时代的产物，它完美承接了深度学习模型（尤其是Embedding模型）的输出。它不仅仅是一个存储系统，更是连接模型理解能力与实际应用的桥梁，是构建大模型记忆体、推荐系统、图像检索等众多AI应用的核心基础设施。</p>
-</li>
-</ol>
-<p><strong>总结一下：</strong></p>
-<p>使用两个数据库，就像我们的大脑一样。关系型数据库像是负责<strong>精确记忆</strong>的“海马体”，能准确无误地调取“昨天晚饭吃了什么”；而向量数据库则像是负责<strong>联想与归纳</strong>的“新皮层”，当你想到“假期”时，它会为你链接到“沙滩”、“旅游”、“放松”等一系列相关概念。</p>
-<p>在RAG中，正是这种<strong>精确存储</strong>与<strong>智能联想</strong>的完美结合，才让系统既能“记得准”，又能“想得到”，从而实现了高质量的知识检索与生成。</p>
 ]]></content>
       <categories>
         <category>技术</category>
