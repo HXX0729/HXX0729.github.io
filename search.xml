@@ -350,6 +350,24 @@
       </categories>
   </entry>
   <entry>
+    <title>缓存穿透、缓存击穿、缓存雪崩</title>
+    <url>/2025/10/05/Redis/%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F%E3%80%81%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF%E3%80%81%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9/</url>
+    <content><![CDATA[<h1 id="1-缓存穿透："><a href="#1-缓存穿透：" class="headerlink" title="1. 缓存穿透："></a>1. 缓存穿透：</h1><p>请求redis 里不存在的 key，此时会 穿过 redis 去访问 数据库。大量的请求导致数据库压力激增<br><strong>解决方案</strong>：redis 缓存设置空值，或者 布隆过滤器</p>
+<h1 id="2-缓存击穿："><a href="#2-缓存击穿：" class="headerlink" title="2. 缓存击穿："></a>2. 缓存击穿：</h1><p>一个 key是热点 key，redis 缓存里失效（过期）了（看起来就像被击穿了），导致大量请求被打到 数据库上。<br><strong>解决方案：</strong> 第一个去访问数据库的请求，为这个数据 设置互斥锁 setnx，后面的请求就不会去访问数据库了，而是返回一个默认值。</p>
+<p>法 2：不设置真正的过期时间，而是自己实现逻辑过期时间，当一个请求发现过期时，他会去异步地数据库里更新数据。而由于物理上这个数据在 redis 里没有过期，其他请求会获取到旧数据。</p>
+<h1 id="3-缓存雪崩："><a href="#3-缓存雪崩：" class="headerlink" title="3. 缓存雪崩："></a>3. 缓存雪崩：</h1><p>大量缓存击穿同时发生：比如系统初始化的时候，缓存被一起创建，如果他们的过期时间设置的一样，会导致大量数据在同一时间同时失效<br>也可能是 redis 挂了，导致大量请求直接打到数据库<br><strong>解决方案：</strong> 随机设置过期时间<br>对于 redis 挂了：设置哨兵集群</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>Redis</category>
+      </categories>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/2025/09/25/%E9%9D%A2%E8%AF%95%E9%A1%B9%E7%9B%AE/RAG/JSON%20RPC/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
     <title>websocket</title>
     <url>/2025/09/23/HTTP/websocket/</url>
     <content><![CDATA[<p><img src="/../../images/Pasted%20image%2020250923223937.png"></p>
